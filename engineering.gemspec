@@ -1,15 +1,14 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
-require "engineering/version"
 
 Gem::Specification.new do |s|
   s.name        = "engineering"
-  s.version     = Engineering::VERSION
+  s.version     = '0'
   s.authors     = ["Brandon Fosdick"]
   s.email       = ["bfoz@bfoz.net"]
-  s.homepage    = ""
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.homepage    = "http://github.com/bfoz/engineering"
+  s.summary     = %q{Engineering tools}
+  s.description = %q{Tools for Engineers and those who want to be}
 
   s.rubyforge_project = "engineering"
 
