@@ -15,3 +15,10 @@ License
 -------
 
 Copyright 2012 Brandon Fosdick <bfoz@bfoz.net> and released under the BSD license.
+
+Dependencies
+------------
+
+- Units (https://github.com/bfoz/units)
+- Geometry (https://github.com/bfoz/geometry)
+- Sketch (https://github.com/bfoz/sketch)
