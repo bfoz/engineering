@@ -7,8 +7,8 @@ Gem::Specification.new do |s|
     s.authors     = ["Brandon Fosdick"]
     s.email       = ["bfoz@bfoz.net"]
     s.homepage    = "http://github.com/bfoz/engineering"
-    s.summary     = %q{Engineering tools}
-    s.description = %q{Tools for Engineers and those who want to be}
+    s.summary     = %q{Mad Engineering, Ruby style}
+    s.description = %q{Tools for Mad Engineers and those who want to be}
 
     s.rubyforge_project = "engineering"
 
