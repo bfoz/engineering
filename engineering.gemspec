@@ -18,5 +18,5 @@ Gem::Specification.new do |s|
     s.require_paths = ["lib"]
 
     s.add_dependency	'sketch'
-    s.add_dependency	'units'
+    s.add_dependency	'units', '>= 1'
 end
