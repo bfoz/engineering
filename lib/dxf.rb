@@ -44,6 +44,8 @@ module DXF
 			bytes.push line(element.first, element.last)
 		    when Geometry::Polygon
 			element.edges.map {|edge| bytes.push line(edge.first, edge.last) }
+		    when Geometry::Rectangle
+			element.edges.map {|edge| bytes.push line(edge.first, edge.last) }
 		end
 	    end
 
