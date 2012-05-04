@@ -2,6 +2,11 @@ require 'geometry'
 require 'sketch'
 
 module DXF
+=begin
+    {http://en.wikipedia.org/wiki/AutoCAD_DXF}
+    {http://usa.autodesk.com/adsk/servlet/item?siteID=123112&id=12272454&linkID=10809853 DXF Specifications}
+=end
+
     class Builder
 
 	# Convert a {Geometry::Line} into an entity array

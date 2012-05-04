@@ -22,3 +22,9 @@ Dependencies
 - Units (https://github.com/bfoz/units)
 - Geometry (https://github.com/bfoz/geometry)
 - Sketch (https://github.com/bfoz/sketch)
+
+Installation
+------------
+
+Engineering has a number of dependencies. Some of which are hosted on rubygems.org
+and can therefore be handled by the gem utility, but others must be installed manually.
