@@ -19,9 +19,10 @@ Copyright 2012 Brandon Fosdick <bfoz@bfoz.net> and released under the BSD licens
 Dependencies
 ------------
 
-- Units (https://github.com/bfoz/units)
-- Geometry (https://github.com/bfoz/geometry)
-- Sketch (https://github.com/bfoz/sketch)
+- Units [GitHub](https://github.com/bfoz/units)
+- Geometry [GitHub](https://github.com/bfoz/geometry) [RubyGems](https://rubygems.org/gems/geometry)
+- Sketch [GitHub](https://github.com/bfoz/sketch)
+- Model [GitHub](https://github.com/bfoz/model)
 
 Installation
 ------------

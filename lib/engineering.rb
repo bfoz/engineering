@@ -1,3 +1,4 @@
+require 'model'
 require 'sketch'
 require 'units'
 
