@@ -3,6 +3,7 @@ require 'sketch'
 require 'units'
 
 require_relative 'dxf'
+require_relative 'sketchup'
 
 =begin
 A meta-gem for wayward engineering-related gems. Here you can find everything 
