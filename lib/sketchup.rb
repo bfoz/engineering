@@ -29,8 +29,12 @@ module SketchUp
 	    @container = container
 	end
 
+	def to_a
+	    HEADER_LINES + to_array(@container)
+	end
+
 	def to_s
-	    (HEADER_LINES + to_array(@container)).join "\n"
+	    to_a.join "\n"
 	end
 
 	private
@@ -57,20 +61,16 @@ module SketchUp
 		when Geometry::Line
 		    "model.entities.add_line(#{to_sketchup(entity.first)}, #{to_sketchup(entity.last)})"
 		when Geometry::Point
-		    '[' + entity.to_a.map {|v| to_sketchup(v) }.join(', ') + ']'
+		    '[' + to_sketchup(entity.to_a) + ']'
 		when Geometry::Polygon
 		    "model.entities.add_face(#{to_sketchup(entity.points)})"
 		when Geometry::Rectangle
 		    "model.entities.add_face(#{to_sketchup(entity.points)})"
 		when Units
 		    s = entity.to_s
-		    if SKETCHUP_UNITS.key?(s)
-			SKETCHUP_UNITS[s]
-		    else
-			raise "SketchUp won't recognize '#{s}'"
-		    end
+		    SKETCHUP_UNITS[s] or raise "SketchUp won't recognize '#{s}'"
 		when Units::Literal
-		    entity.to_s + (entity.units ? '.' + to_sketchup(entity.units) : '')
+		    [entity.to_s, to_sketchup(entity.units)].join '.'
 		else
 		    entity.to_s
 	    end
