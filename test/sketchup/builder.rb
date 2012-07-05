@@ -1,5 +1,6 @@
 require 'minitest/autorun'
 require 'sketchup'
+require 'units'
 
 describe SketchUp::Builder do
     before do
@@ -14,6 +15,7 @@ describe SketchUp::Builder do
     }
     let(:empty_model_data)  { header_lines.join "\n" }
     let(:simple_extrusion_model_data)	{ header_lines.push('model.entities.add_face([0, 0], [0, 1], [1, 1], [1, 0]).reverse!.pushpull(5)').join "\n" }
+    let(:simple_extrusion_units_model_data)	{ header_lines.push('model.entities.add_face([0, 0], [0, 1.mm], [1.cm, 1.mm], [1.cm, 0]).reverse!.pushpull(5)').join "\n" }
 
     let(:empty_sketch_data) { header_lines.join "\n" }
     let(:line_sketch_data)  { header_lines.push('model.entities.add_line([0, 0], [1, 0])').join "\n" }
@@ -37,6 +39,22 @@ describe SketchUp::Builder do
 	model = Model.new
 	model.add_extrusion 5, sketch
 	@builder.from_model(model).must_equal simple_extrusion_model_data
+    end
+
+    it "should generate the correct text from a Model of a simple extrusion with units" do
+	sketch = Sketch.new
+	sketch.rectangle [0,0], [1.cm,1.mm]
+	model = Model.new
+	model.add_extrusion 5.meters, sketch
+	@builder.from_model(model).must_equal simple_extrusion_units_model_data
+    end
+
+    it "should not break Point's to_s method" do
+	5.cm.to_s.must_equal "5"
+    end
+
+    it "should not break Point's inspect method" do
+	5.cm.inspect.must_equal "5 centimeter"
     end
 
     describe "when given an empty Sketch object" do
