@@ -1,18 +1,12 @@
 require 'minitest/autorun'
 require 'sketchup'
-require 'units'
 
 describe SketchUp::Builder do
     before do
     	@builder = SketchUp::Builder.new
     end
 
-    let(:header_lines) {
-	['model = Sketchup.active_model',
-	 'model.entities.clear!',
-	 'model.definitions.purge_unused',
-	]
-    }
+    let(:header_lines)	    { SketchUp::HEADER_LINES }
     let(:empty_model_data)  { header_lines.join "\n" }
     let(:simple_extrusion_model_data)	{ header_lines.push('model.entities.add_face([0, 0], [0, 1], [1, 1], [1, 0]).reverse!.pushpull(5)').join "\n" }
     let(:simple_extrusion_units_model_data)	{ header_lines.push('model.entities.add_face([0, 0], [0, 1.mm], [1.cm, 1.mm], [1.cm, 0]).reverse!.pushpull(5)').join "\n" }
@@ -22,7 +16,6 @@ describe SketchUp::Builder do
     let(:rectangle_sketch_data)	{ header_lines.push('model.entities.add_face([0, 0], [0, 1], [1, 1], [1, 0])').join "\n" }
 
     it "should keep private methods private" do
-	@builder.wont_respond_to :header_lines
 	@builder.wont_respond_to :to_array
 	@builder.wont_respond_to :to_sketchup
     end

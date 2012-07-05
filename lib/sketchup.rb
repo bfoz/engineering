@@ -8,6 +8,12 @@ module SketchUp
     Export to a Ruby script that can be executed by SketchUp to recreate the geometry
 =end
 
+    HEADER_LINES = [
+	'model = Sketchup.active_model',
+	'model.entities.clear!',
+	'model.definitions.purge_unused',
+    ]
+
     SKETCHUP_UNITS = {
 	'kilometer' => 'km',    'meter' => 'm',	    'centimeter'=> 'cm',    'millimeter'=> 'mm',
 	'mile'	    => 'mile',	'yard'  => 'yard',  'feet'	=> 'feet',  'inch'	=> 'inch',
@@ -24,17 +30,10 @@ module SketchUp
 	end
 
 	def to_s
-	    (header_lines + to_array(@container)).join "\n"
+	    (HEADER_LINES + to_array(@container)).join "\n"
 	end
 
 	private
-
-	def header_lines
-	    ['model = Sketchup.active_model',
-	     'model.entities.clear!',
-	     'model.definitions.purge_unused',
-	    ]
-	end
 
 	# Convert the given container to an array of strings that SketchUp can read
 	def to_array(container)
