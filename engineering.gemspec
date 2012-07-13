@@ -19,5 +19,5 @@ Gem::Specification.new do |s|
 
     s.add_dependency	'model'
     s.add_dependency	'sketch'
-    s.add_dependency	'units', '>= 1'
+    s.add_dependency	'units', '>= 2'
 end
