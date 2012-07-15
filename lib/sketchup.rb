@@ -45,7 +45,7 @@ module SketchUp
 		when Model
 		    container.elements.map {|element| to_array(element) }.flatten
 		when Model::Extrusion
-		    to_array(container.sketch).map {|l| "#{l}.reverse!.pushpull(#{container.length})"}
+		    to_array(container.sketch).map {|l| "#{l}.reverse!.pushpull(#{to_sketchup(container.length)})"}
 		when Sketch
 		    container.geometry.map {|element| to_sketchup(element) }
 	    end

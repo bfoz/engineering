@@ -9,7 +9,7 @@ describe SketchUp::Builder do
     let(:header_lines)	    { SketchUp::HEADER_LINES }
     let(:empty_model_data)  { header_lines.join "\n" }
     let(:simple_extrusion_model_data)	{ header_lines.push('model.entities.add_face([-5.0, -10.0], [-5.0, 10.0], [5.0, 10.0], [5.0, -10.0]).reverse!.pushpull(5)').join "\n" }
-    let(:simple_extrusion_units_model_data)	{ header_lines.push('model.entities.add_face([-0.5.m, -5.0], [-0.5.m, 5.0], [0.5.m, 5.0], [0.5.m, -5.0]).reverse!.pushpull(5)').join "\n" }
+    let(:simple_extrusion_units_model_data)	{ header_lines.push('model.entities.add_face([-0.5.m, -5.0], [-0.5.m, 5.0], [0.5.m, 5.0], [0.5.m, -5.0]).reverse!.pushpull(5.m)').join "\n" }
 
     let(:empty_sketch_data) { header_lines.join "\n" }
     let(:line_sketch_data)  { header_lines.push('model.entities.add_line([0, 0], [1, 0])').join "\n" }
