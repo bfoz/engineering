@@ -29,3 +29,18 @@ Installation
 
 Engineering has a number of dependencies. Some of which are hosted on rubygems.org
 and can therefore be handled by the gem utility, but others must be installed manually.
+
+Examples
+--------
+
+Creating a custom Cube class, the hard way:
+
+    require 'engineering'
+
+    model :MyCube do
+        extrusion 10.cm do
+            add_square 10.cm
+        end
+    end
+
+    MyCube.new
