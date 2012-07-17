@@ -44,3 +44,9 @@ Creating a custom Cube class, the hard way:
     end
 
     MyCube.new
+
+Once a Model has been defined, it can be instantiated and exported to SketchUp with a single line
+
+    SketchUp.write('MyCube.su', MyCube.new)
+
+Then, launch SketchUp, open the _Ruby Console_ (it's in the Window menu), and _load 'MyCube.su'_. Your new geometry will replace whatever was already in the SketchUp document (a person if you just opened it), so be careful.
