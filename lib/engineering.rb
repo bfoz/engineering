@@ -32,3 +32,4 @@ module Engineering
 end
 
 self.extend Engineering::DSL
+include Geometry	# Make Geometry types more readily available
