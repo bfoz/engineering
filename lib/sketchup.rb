@@ -40,37 +40,53 @@ module SketchUp
 	private
 
 	# Convert the given container to an array of strings that SketchUp can read
-	def to_array(container)
+	def to_array(container, parent='model.entities')
 	    case container
 		when Model
 		    container.elements.map {|element| to_array(element) }.flatten
 		when Model::Extrusion
-		    to_array(container.sketch).map {|l| "#{l}.reverse!.pushpull(#{to_sketchup(container.length)})"}
+		    if container.transformation and not container.transformation.identity?
+			name = container.class.to_s + to_sketchup(container.length)
+			lines = to_array(container.sketch, 'd.entities').map {|l| "#{l}.reverse!.pushpull(#{to_sketchup(container.length)})"}
+			elements = [lines.flatten, "#{parent}.add_instance(d, #{to_sketchup(container.transformation)})"].join("\n\t")
+			"lambda {|d|\n\t#{elements}\n}.call(model.definitions.add('#{name}'))"
+		    else
+			to_array(container.sketch, parent).map {|l| "#{l}.reverse!.pushpull(#{to_sketchup(container.length)})"}
+		    end
 		when Sketch
-		    container.geometry.map {|element| to_sketchup(element) }
+		    container.geometry.map {|element| to_sketchup(element, parent) }
 	    end
 	end
 
 	# Convert the given entity to a string that SketchUp can read
-	def to_sketchup(entity)
+	def to_sketchup(entity, parent='model.entities')
 	    case entity
 		when Array
 		    entity.map {|v| to_sketchup(v) }.join(', ')
 		when Geometry::Circle
-		    "lambda{points = model.entities.add_circle(#{to_sketchup(entity.center)}, [0,0,1], #{to_sketchup(entity.radius)}); points[0].find_faces; points[0].faces[0]}.call"
+		    "lambda{points = #{parent}.add_circle(#{to_sketchup(entity.center)}, [0,0,1], #{to_sketchup(entity.radius)}); points[0].find_faces; points[0].faces[0]}.call"
 		when Geometry::Line
-		    "model.entities.add_line(#{to_sketchup(entity.first)}, #{to_sketchup(entity.last)})"
+		    "#{parent}.add_line(#{to_sketchup(entity.first)}, #{to_sketchup(entity.last)})"
 		when Geometry::Point
 		    '[' + to_sketchup(entity.to_a) + ']'
 		when Geometry::Polygon
-		    "model.entities.add_face(#{to_sketchup(entity.points)})"
+		    "#{parent}.add_face(#{to_sketchup(entity.points)})"
 		when Geometry::Rectangle
-		    "model.entities.add_face(#{to_sketchup(entity.points)})"
+		    "#{parent}.add_face(#{to_sketchup(entity.points)})"
+		when Geometry::Transformation
+		    pt = entity.translation ? to_sketchup(entity.translation) : ''
+		    "Geom::Transformation.new(#{pt})"
+		when Rational
+		    if entity.respond_to?(:units)
+			[entity.to_f.to_s, to_sketchup(entity.units)].join '.'
+		    else
+			entity.to_f.to_s
+		    end
 		when Units
 		    s = entity.to_s
 		    SKETCHUP_UNITS[s] or raise "SketchUp won't recognize '#{s}'"
 		when Units::Literal
-		    [entity.to_s, to_sketchup(entity.units)].join '.'
+		    [to_sketchup(entity.literal), to_sketchup(entity.units)].join '.'
 		else
 		    entity.to_s
 	    end
