@@ -86,7 +86,7 @@ module SketchUp
 		    s = entity.to_s
 		    SKETCHUP_UNITS[s] or raise "SketchUp won't recognize '#{s}'"
 		when Units::Literal
-		    [to_sketchup(entity.literal), to_sketchup(entity.units)].join '.'
+		    [to_sketchup(entity.value), to_sketchup(entity.units)].join '.'
 		else
 		    entity.to_s
 	    end
