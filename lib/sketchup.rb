@@ -27,10 +27,12 @@ module SketchUp
 	# Initialize with a Sketch or a Model
 	def initialize(container=nil)
 	    @container = container
+	    @definition_names = {}
 	end
 
 	def to_a
-	    HEADER_LINES + to_array(@container)
+	    a = to_array(@container)	# Generates the definitions as a side effect
+	    HEADER_LINES + @definition_names.values.flatten + a
 	end
 
 	def to_s
@@ -39,6 +41,32 @@ module SketchUp
 
 	private
 
+	def name_for_container(container)
+	    case container
+		when Model::Extrusion
+		    container.class.to_s +  "(#{container.object_id.to_s})_#{to_sketchup(container.length)}"
+		when Model::Group
+		    container.class.to_s +  "(#{container.object_id.to_s})"
+	    end
+	end
+
+	def to_definition(container, definition_name)
+	    case container
+		when Model::Extrusion
+		    lines = to_array(container.sketch, 'd.entities').map {|l| "#{l}.reverse!.pushpull(#{to_sketchup(container.length)})"}
+		    elements = lines.flatten.join("\n\t")
+		    "lambda {|d|\n\t#{elements}\n}.call(model.definitions.add('#{definition_name}'))"
+	    end
+	end
+
+	def add_instance(parent, container)
+	    definition_name = name_for_container(container)
+	    unless @definition_names.key?(definition_name)
+		@definition_names[definition_name] = to_definition(container, definition_name)
+	    end
+	    ["#{parent}.add_instance(model.definitions['#{definition_name}'], #{to_sketchup(container.transformation)})"]
+	end
+
 	# Convert the given container to an array of strings that SketchUp can read
 	def to_array(container, parent='model.entities')
 	    case container
@@ -46,10 +74,7 @@ module SketchUp
 		    container.elements.map {|element| to_array(element) }.flatten
 		when Model::Extrusion
 		    if container.transformation and not container.transformation.identity?
-			name = container.class.to_s + to_sketchup(container.length)
-			lines = to_array(container.sketch, 'd.entities').map {|l| "#{l}.reverse!.pushpull(#{to_sketchup(container.length)})"}
-			elements = [lines.flatten, "#{parent}.add_instance(d, #{to_sketchup(container.transformation)})"].join("\n\t")
-			"lambda {|d|\n\t#{elements}\n}.call(model.definitions.add('#{name}'))"
+			add_instance(parent, container)
 		    else
 			to_array(container.sketch, parent).map {|l| "#{l}.reverse!.pushpull(#{to_sketchup(container.length)})"}
 		    end
