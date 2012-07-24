@@ -85,4 +85,12 @@ describe SketchUp::Builder do
 	@builder.container = sketch
 	@builder.to_s.must_equal rectangle_sketch_data
     end
+
+    it "must handle a Group" do
+	builder = SketchUp::Builder.new( Model::Builder.new.evaluate { group :origin => [1,2,3] })
+	builder.container.elements.count.must_equal 1
+	builder.container.elements.first.must_be_instance_of(Model::Group)
+	builder.to_s.must_equal "model = Sketchup.active_model\nmodel.entities.clear!\nmodel.definitions.purge_unused\nlambda {|d|\n\t\n\tmodel.entities.add_instance(d, Geom::Transformation.new([1, 2, 3],[1,0,0],[0,1,0]))\n}.call(model.definitions.add('Model::Group'))"
+    end
+
 end

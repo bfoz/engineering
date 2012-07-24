@@ -56,6 +56,10 @@ module SketchUp
 		    lines = to_array(container.sketch, 'd.entities').map {|l| "#{l}.reverse!.pushpull(#{to_sketchup(container.length)})"}
 		    elements = lines.flatten.join("\n\t")
 		    "lambda {|d|\n\t#{elements}\n}.call(model.definitions.add('#{definition_name}'))"
+		when Model::Group
+		    lines = container.elements.map {|element| to_array(element, 'g.entities') }.flatten
+		    elements = lines.flatten.join("\n\t")
+		    "lambda {|g|\n\t#{elements}\n}.call(model.definitions.add('#{definition_name}'))"
 	    end
 	end
 
@@ -70,14 +74,20 @@ module SketchUp
 	# Convert the given container to an array of strings that SketchUp can read
 	def to_array(container, parent='model.entities')
 	    case container
-		when Model
-		    container.elements.map {|element| to_array(element) }.flatten
 		when Model::Extrusion
 		    if container.transformation and not container.transformation.identity?
 			add_instance(parent, container)
 		    else
 			to_array(container.sketch, parent).map {|l| "#{l}.reverse!.pushpull(#{to_sketchup(container.length)})"}
 		    end
+		when Model::Group
+		    if container.transformation and not container.transformation.identity?
+			add_instance(parent, container)
+		    else
+			container.elements.map {|element| to_array(element) }.flatten
+		    end
+		when Model  # !!! Must be after all subclasses of Model
+		    container.elements.map {|element| to_array(element) }.flatten
 		when Sketch
 		    container.geometry.map {|element| to_sketchup(element, parent) }
 	    end
