@@ -109,7 +109,7 @@ module SketchUp
 		when Geometry::Rectangle
 		    "#{parent}.add_face(#{to_sketchup(entity.points)})"
 		when Geometry::Transformation
-		    pt = entity.translation ? to_sketchup(entity.translation) : ''
+		    pt = entity.translation ? to_sketchup(entity.translation) : '[0,0,0]'
 		    x_axis = '[' + (entity.x_axis ? to_sketchup(entity.x_axis) : '1,0,0') + ']'
 		    y_axis = '[' + (entity.y_axis ? to_sketchup(entity.y_axis) : '0,1,0') + ']'
 		    "Geom::Transformation.new(#{[pt,x_axis,y_axis].join(',')})"
