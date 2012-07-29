@@ -28,6 +28,20 @@ module Engineering
 	    ]
 	    symbol ? Object.const_set(symbol, klass) : klass
 	end
+
+	# Create a new {Sketch} subclass and initialize it with the given block
+	# @param [Symbol]   symbol  The name of the {Sketch} subclass
+	def sketch(symbol=nil, &block)
+	    klass = Class.new(Sketch)
+	    klass.const_set(:INITIALIZER_BLOCK, block)
+	    klass.class_eval %q[
+		def initialize(*args)
+		    super
+		    Sketch::Builder.new(self).evaluate(&INITIALIZER_BLOCK)
+		end
+	    ]
+	    symbol ? Object.const_set(symbol, klass) : klass
+	end
     end
 end
 
