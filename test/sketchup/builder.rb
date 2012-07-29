@@ -8,12 +8,12 @@ describe SketchUp::Builder do
 
     let(:header_lines)	    { SketchUp::HEADER_LINES }
     let(:empty_model_data)  { header_lines.join "\n" }
-    let(:simple_extrusion_model_data)	{ header_lines.push('model.entities.add_face([-5.0, -10.0], [-5.0, 10.0], [5.0, 10.0], [5.0, -10.0]).reverse!.pushpull(5)').join "\n" }
-    let(:simple_extrusion_units_model_data)	{ header_lines.push('model.entities.add_face([-0.5.m, -5.0], [-0.5.m, 5.0], [0.5.m, 5.0], [0.5.m, -5.0]).reverse!.pushpull(5.m)').join "\n" }
+    let(:simple_extrusion_model_data)	{ (header_lines + ['model.entities.add_face([-5.0, -10.0], [-5.0, 10.0], [5.0, 10.0], [5.0, -10.0]).reverse!.pushpull(5)']).join "\n" }
+    let(:simple_extrusion_units_model_data)	{ (header_lines + ['model.entities.add_face([-0.5.m, -5.0], [-0.5.m, 5.0], [0.5.m, 5.0], [0.5.m, -5.0]).reverse!.pushpull(5.m)']).join "\n" }
 
     let(:empty_sketch_data) { header_lines.join "\n" }
-    let(:line_sketch_data)  { header_lines.push('model.entities.add_line([0, 0], [1, 0])').join "\n" }
-    let(:rectangle_sketch_data)	{ header_lines.push('model.entities.add_face([0, 0], [0, 1], [1, 1], [1, 0])').join "\n" }
+    let(:line_sketch_data)  { (header_lines + ['model.entities.add_line([0, 0], [1, 0])']).join "\n" }
+    let(:rectangle_sketch_data)	{ (header_lines + ['model.entities.add_face([0, 0], [0, 1], [1, 1], [1, 0])']).join "\n" }
 
     it "should keep private methods private" do
 	@builder.wont_respond_to :to_array
@@ -90,7 +90,7 @@ describe SketchUp::Builder do
 	builder = SketchUp::Builder.new( Model::Builder.new.evaluate { group :origin => [1,2,3] })
 	builder.container.elements.count.must_equal 1
 	builder.container.elements.first.must_be_instance_of(Model::Group)
-	builder.to_s.must_equal "model = Sketchup.active_model\nmodel.entities.clear!\nmodel.definitions.purge_unused\nlambda {|d|\n\t\n\tmodel.entities.add_instance(d, Geom::Transformation.new([1, 2, 3],[1,0,0],[0,1,0]))\n}.call(model.definitions.add('Model::Group'))"
+	builder.to_s.must_match %r{model = Sketchup.active_model\nmodel.entities.clear!\nmodel.definitions.purge_unused\nlambda {|g|\n\t\n}.call(model.definitions.add('Model::Group()'))\nmodel.entities.add_instance(model.definitions\['Model::Group(\d+)'\], Geom::Transformation.new(\[1, 2, 3\],\[1,0,0\],\[0,1,0\]))}
     end
 
 end
