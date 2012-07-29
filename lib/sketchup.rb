@@ -44,9 +44,12 @@ module SketchUp
 	def name_for_container(container)
 	    case container
 		when Model::Extrusion
-		    container.class.to_s +  "(#{container.object_id.to_s})_#{to_sketchup(container.length)}"
+		    container.class.to_s +  "(#{name_for_container(container.sketch)})_#{to_sketchup(container.length)}"
 		when Model::Group
 		    container.class.to_s +  "(#{container.object_id.to_s})"
+		when Sketch
+		    s = container.class.to_s
+		    (s == 'Sketch') ? s + ":#{container.object_id.to_s}" : s
 	    end
 	end
 
