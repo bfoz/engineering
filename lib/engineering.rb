@@ -1,3 +1,5 @@
+require 'mathn'
+
 require 'model'
 require 'sketch'
 require 'units'

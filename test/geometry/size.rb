@@ -31,8 +31,8 @@ describe Geometry::Size do
 	    end
 	    
 	    it "should divide by a constant" do
-		(sizeB / 2).must_equal Size[2.meters, 2.meters]
-		(sizeB / 2.0).must_equal Size[2.meters, 2.5.meters]
+		(sizeB / 2).must_equal Size[2.meters, 2.5.meters]
+		(sizeB / 2.0).must_equal Size[2.0.meters, 2.5.meters]
 	    end
 	end
     end

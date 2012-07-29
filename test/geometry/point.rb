@@ -31,8 +31,8 @@ describe Geometry::Point do
 	    end
 	    
 	    it "should divide by a constant" do
-		(pointB / 2).must_equal Point[2.meters, 2.meters]
-		(pointB / 2.0).must_equal Point[2.meters, 2.5.meters]
+		(pointB / 2).must_equal Point[2.meters, 2.5.meters]
+		(pointB / 2.0).must_equal Point[2.0.meters, 2.5.meters]
 	    end
 	end
     end
