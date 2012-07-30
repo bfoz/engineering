@@ -47,6 +47,9 @@ module SketchUp
 		    container.class.to_s +  "(#{name_for_container(container.sketch)})_#{to_sketchup(container.length)}"
 		when Model::Group
 		    container.class.to_s +  "(#{container.object_id.to_s})"
+		when Model  # !!! Must be after all subclasses of Model
+		    s = container.class.to_s
+		    (s == 'Model') ? s + "(#{container.object_id.to_s})" : s
 		when Sketch
 		    s = container.class.to_s
 		    (s == 'Sketch') ? s + ":#{container.object_id.to_s}" : s
@@ -63,6 +66,9 @@ module SketchUp
 		    lines = container.elements.map {|element| to_array(element, 'g.entities') }.flatten
 		    elements = lines.flatten.join("\n\t")
 		    "lambda {|g|\n\t#{elements}\n}.call(model.definitions.add('#{definition_name}'))"
+		when Model  # !!! Must be after all subclasses of Model
+		    elements = container.elements.map {|element| to_array(element, 'm.entities') }.flatten.join("\n\t")
+		    "lambda {|m|\n\t#{elements}\n}.call(model.definitions.add('#{definition_name}'))"
 	    end
 	end
 
@@ -90,7 +96,11 @@ module SketchUp
 			container.elements.map {|element| to_array(element) }.flatten
 		    end
 		when Model  # !!! Must be after all subclasses of Model
-		    container.elements.map {|element| to_array(element) }.flatten
+		    if container.transformation and not container.transformation.identity?
+			add_instance(parent, container)
+		    else
+			container.elements.map {|element| to_array(element, parent) }.flatten
+		    end
 		when Sketch
 		    container.geometry.map {|element| to_sketchup(element, parent) }
 	    end

@@ -20,6 +20,14 @@ describe SketchUp::Builder do
 	@builder.wont_respond_to :to_sketchup
     end
 
+    it "should not break Point's to_s method" do
+	5.cm.to_s.must_equal "5"
+    end
+
+    it "should not break Point's inspect method" do
+	5.cm.inspect.must_equal "5 centimeter"
+    end
+
     describe "when given an empty Model object" do
 	before do
 	    sketch = Sketch.new
@@ -50,14 +58,6 @@ describe SketchUp::Builder do
 	model.add_extrusion Model::Extrusion.new(5.meters, sketch)
 	@builder.container = model
 	@builder.to_s.must_equal simple_extrusion_units_model_data
-    end
-
-    it "should not break Point's to_s method" do
-	5.cm.to_s.must_equal "5"
-    end
-
-    it "should not break Point's inspect method" do
-	5.cm.inspect.must_equal "5 centimeter"
     end
 
     it "should generate correct text from an empty Sketch" do
@@ -93,4 +93,10 @@ describe SketchUp::Builder do
 	builder.to_s.must_match %r{model = Sketchup.active_model\nmodel.entities.clear!\nmodel.definitions.purge_unused\nlambda {|g|\n\t\n}.call(model.definitions.add('Model::Group()'))\nmodel.entities.add_instance(model.definitions\['Model::Group(\d+)'\], Geom::Transformation.new(\[1, 2, 3\],\[1,0,0\],\[0,1,0\]))}
     end
 
+    it "must handle a sub-model" do
+	builder = SketchUp::Builder.new( Model::Builder.new.evaluate { push Model.new, :origin => [3,2,1] })
+	builder.container.elements.count.must_equal 1
+	builder.container.elements.first.must_be_instance_of(Model)
+	builder.to_s.must_match %r{model = Sketchup.active_model\nmodel.entities.clear!\nmodel.definitions.purge_unused\nlambda {|m|\n\t\n}.call(model.definitions.add('Model(\d+)'))\nmodel.entities.add_instance(model.definitions\['Model(\d+)'\], Geom::Transformation.new(\[3, 2, 1\],\[1,0,0\],\[0,1,0\]))}
+    end
 end
