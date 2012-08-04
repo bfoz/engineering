@@ -93,7 +93,7 @@ module SketchUp
 		    if container.transformation and not container.transformation.identity?
 			add_instance(parent, container)
 		    else
-			container.elements.map {|element| to_array(element) }.flatten
+			container.elements.map {|element| to_array(element, parent) }.flatten
 		    end
 		when Model  # !!! Must be after all subclasses of Model
 		    if container.transformation and not container.transformation.identity?
