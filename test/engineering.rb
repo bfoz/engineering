@@ -110,7 +110,7 @@ describe Engineering do
 
 	it "must call the initializer block when constructed" do
 	    testSketch.elements.count.must_equal 1
-	    testSketch.elements.first.must_be_kind_of Geometry::Rectangle
+	    testSketch.elements.first.must_be_kind_of Geometry::Square
 	end
 
 	describe "when another sketch class is created with a new name" do
@@ -129,7 +129,7 @@ describe Engineering do
 
 	    it "must call the correct initializer block when constructed" do
 		testSketch2.elements.count.must_equal 1
-		testSketch2.elements.first.must_be_kind_of Geometry::Rectangle
+		testSketch2.elements.first.must_be_kind_of Geometry::Square
 	    end
 
 	    describe "when the original Sketch class is used again" do
@@ -137,7 +137,7 @@ describe Engineering do
 
 		it "must call the correct initializer block when constructed" do
 		    anotherTestSketch.elements.count.must_equal 1
-		    anotherTestSketch.elements.first.must_be_kind_of Geometry::Rectangle
+		    anotherTestSketch.elements.first.must_be_kind_of Geometry::Square
 		end
 	    end
 	end
