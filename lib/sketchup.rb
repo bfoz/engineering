@@ -112,11 +112,16 @@ module SketchUp
 		when Array
 		    entity.map {|v| to_sketchup(v) }.join(', ')
 		when Geometry::Arc
-		    "lambda{ points = #{parent}.add_arc(#{to_sketchup(entity.center)}, [1,0,0], [0,0,1], #{to_sketchup(entity.radius)}, #{to_sketchup(entity.start_angle)}, #{to_sketchup(entity.end_angle)}); points[0].find_faces; points[0].faces[0]}.call"
+		    "#{parent}.add_arc(#{to_sketchup(entity.center)}, [1,0,0], [0,0,1], #{to_sketchup(entity.radius)}, #{to_sketchup(entity.start_angle)}, #{to_sketchup(entity.end_angle)})"
 		when Geometry::Circle
 		    "lambda{ points = #{parent}.add_circle(#{to_sketchup(entity.center)}, [0,0,1], #{to_sketchup(entity.radius)}); points[0].find_faces; points[0].faces[0]}.call"
+		when Geometry::Edge
+		    "#{parent}.add_edges(#{to_sketchup(entity.first)}, #{to_sketchup(entity.last)})"
 		when Geometry::Line
 		    "#{parent}.add_line(#{to_sketchup(entity.first)}, #{to_sketchup(entity.last)})"
+		when Geometry::Path
+		    edges = entity.elements.map {|e| to_sketchup(e, parent) }.flatten.join '+'
+		    "#{parent}.add_face(#{edges})"
 		when Geometry::Point
 		    '[' + to_sketchup(entity.to_a) + ']'
 		when Geometry::Polygon

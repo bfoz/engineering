@@ -99,4 +99,11 @@ describe SketchUp::Builder do
 	builder.container.elements.first.must_be_instance_of(Model)
 	builder.to_s.must_match %r{model = Sketchup.active_model\nmodel.entities.clear!\nmodel.definitions.purge_unused\nlambda {|m|\n\t\n}.call(model.definitions.add('Model(\d+)'))\nmodel.entities.add_instance(model.definitions\['Model(\d+)'\], Geom::Transformation.new(\[3, 2, 1\],\[1,0,0\],\[0,1,0\]))}
     end
+
+    it "Path" do
+	sketch = Sketch.new
+	sketch.add_path [0,0], Geometry::Arc.new([0,0],5,0,90*Math::PI/180), [0,0]
+	builder = SketchUp::Builder.new( Model::Builder.new.evaluate { extrude 5, sketch })
+	p builder.to_s
+    end
 end
