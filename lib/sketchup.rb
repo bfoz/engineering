@@ -133,6 +133,8 @@ module SketchUp
 		    x_axis = '[' + (entity.rotation.x ? to_sketchup(entity.rotation.x.to_a) : '1,0,0') + ']'
 		    y_axis = '[' + (entity.rotation.y ? to_sketchup(entity.rotation.y.to_a) : '0,1,0') + ']'
 		    "Geom::Transformation.new(#{[pt,x_axis,y_axis].join(',')})"
+		when Geometry::Triangle
+		    "#{parent}.add_face(#{to_sketchup(entity.points)})"
 		when Rational
 		    if entity.respond_to?(:units)
 			[entity.to_f.to_s, to_sketchup(entity.units)].join '.'
