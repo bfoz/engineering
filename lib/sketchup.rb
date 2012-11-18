@@ -135,17 +135,15 @@ module SketchUp
 		    "Geom::Transformation.new(#{[pt,x_axis,y_axis].join(',')})"
 		when Geometry::Triangle
 		    "#{parent}.add_face(#{to_sketchup(entity.points)})"
+		when Float
+		    entity.to_s
 		when Rational
-		    if entity.respond_to?(:units)
-			[entity.to_f.to_s, to_sketchup(entity.units)].join '.'
-		    else
-			entity.to_f.to_s
-		    end
+		    [entity.to_f, entity.respond_to?(:units) ? entity.units : nil].compact.map {|a| to_sketchup(a)}.join '.'
 		when Units
 		    s = entity.to_s
 		    SKETCHUP_UNITS[s] or raise "SketchUp won't recognize '#{s}'"
 		when Units::Literal
-		    [to_sketchup(entity.value), to_sketchup(entity.units)].join '.'
+		    [entity.value, entity.units].compact.map {|a| to_sketchup(a)}.join '.'
 		else
 		    entity.to_s
 	    end
