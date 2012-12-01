@@ -91,5 +91,11 @@ describe DXF::Builder do
 	    builder.to_s.must_equal (empty_header + entities_header + square_lines +
 				     end_section + eof).join "\n"
 	end
+
+	it "with a single Square" do
+	    sketch.push Geometry::Rectangle.new [0,0], [1,1]
+	    builder.to_s.must_equal (empty_header + entities_header + square_lines +
+				     end_section + eof).join "\n"
+	end
     end
 end

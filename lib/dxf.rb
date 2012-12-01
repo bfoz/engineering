@@ -62,6 +62,10 @@ module DXF
 			element.edges.map {|edge| bytes.push line(edge.first, edge.last) }
 		    when Geometry::Rectangle
 			element.edges.map {|edge| bytes.push line(edge.first, edge.last) }
+		    when Geometry::Square
+			points = element.points
+			points.each_cons(2) {|p1,p2| bytes.push line(p1,p2) }
+			bytes.push line(points.last, point.first)
 		end
 	    end
 
