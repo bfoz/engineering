@@ -79,6 +79,13 @@ describe DXF::Builder do
 				     end_section + eof).join("\n")
 	end
 
+	it "with a single Polyline" do
+	    sketch.push Geometry::Polyline.new [0,0], [1,0], [1,1], [0,1]
+	    builder.to_s.must_equal (empty_header + entities_header +
+				     square_lines[0, 36] +
+				     end_section + eof).join("\n")
+	end
+
 	it "with a single Rectangle" do
 	    sketch.push Geometry::Rectangle.new [0,0], [1,1]
 	    builder.to_s.must_equal (empty_header + entities_header + square_lines +

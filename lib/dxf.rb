@@ -58,7 +58,7 @@ module DXF
 			bytes.push 40, element.radius
 		    when Geometry::Line
 			bytes.push line(element.first, element.last)
-		    when Geometry::Polygon
+		    when Geometry::Polyline
 			element.edges.map {|edge| bytes.push line(edge.first, edge.last) }
 		    when Geometry::Rectangle
 			element.edges.map {|edge| bytes.push line(edge.first, edge.last) }
