@@ -8,6 +8,17 @@ module DXF
 =end
 
     class Builder
+	attr_accessor :container
+
+	# Initialize with a Sketch
+	# @param [Sketch] container	A {Sketch} to export to DXF
+	def initialize(container=nil)
+	    @container = container
+	end
+
+	def to_s
+	    from_sketch(container)
+	end
 
 	# Convert a {Geometry::Line} into an entity array
 	# @overload line(Line, layer=0)
