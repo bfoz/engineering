@@ -52,6 +52,16 @@ describe DXF::Builder do
 	    builder.container = sketch
 	end
 
+	it "with a single Arc" do
+	    sketch.push Geometry::Arc.new [0,0], 1, 0, 45
+	    builder.to_s.must_equal (empty_header + entities_header + ['0', 'ARC',
+				     '10', '0',
+				     '20', '0',
+				     '40', '1',
+				     '50', '0',
+				     '51', '45'] + end_section + eof).join("\n")
+	end
+
 	it "with a single Circle" do
 	    sketch.push Geometry::Circle.new [0,0], 1
 	    builder.to_s.must_equal (empty_header + entities_header + ['0', 'CIRCLE',

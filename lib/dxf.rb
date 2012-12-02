@@ -51,6 +51,13 @@ module DXF
 
 	    sketch.geometry.map do |element|
 		case element
+		    when Geometry::Arc
+			bytes.push 0, 'ARC'
+			bytes.push 10, element.center.x
+			bytes.push 20, element.center.y
+			bytes.push 40, element.radius
+			bytes.push 50, element.start_angle
+			bytes.push 51, element.end_angle
 		    when Geometry::Circle
 			bytes.push 0, 'CIRCLE'
 			bytes.push 10, element.center.x
