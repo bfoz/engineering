@@ -44,6 +44,22 @@ module Engineering
 	    ]
 	    symbol ? Object.const_set(symbol, klass) : klass
 	end
+
+	class Geometry::Polygon
+	    # Build a {Polygon} instance using the {Sketch} DSL
+	    # @return [Polygon]
+	    def self.build(&block)
+		Sketch::PolygonBuilder.new.evaluate(&block)
+	    end
+	end
+
+	class Geometry::Polyline
+	    # Build a {Polyline} instance using the {Sketch} DSL
+	    # @return [Polyline]
+	    def self.build(&block)
+		Sketch::PolylineBuilder.new.evaluate(&block)
+	    end
+	end
     end
 end
 

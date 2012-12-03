@@ -143,4 +143,29 @@ describe Engineering do
 	end
     end
 
+    describe "when creating a Polygon" do
+	it "must create a Polygon" do
+	    polygon = Polygon.build do
+		start_at [0,0]
+		right	1
+		up	1
+		left	1
+		down	1
+	    end
+	    polygon.must_be_instance_of(Geometry::Polygon)
+	end
+    end
+
+    describe "when creating a Polyline" do
+	it "must create a Polyline" do
+	    polyline = Polyline.build do
+		start_at [0,0]
+		right	1
+		up	1
+		left	1
+		down	1
+	    end
+	    polyline.must_be_instance_of(Geometry::Polyline)
+	end
+    end
 end
