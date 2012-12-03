@@ -124,7 +124,8 @@ module SketchUp
 		    "#{parent}.add_face(#{edges})"
 		when Geometry::Polyline
 		    vertices = entity.vertices.map {|v| to_sketchup(v, parent) }.join ','
-		    "#{parent}.add_curve(#{vertices})"
+		    method = entity.is_a?(Geometry::Polygon) ? 'add_face' : 'add_curve'
+		    "#{parent}.#{method}(#{vertices})"
 		when Geometry::Point
 		    '[' + to_sketchup(entity.to_a) + ']'
 		when Geometry::Polygon
