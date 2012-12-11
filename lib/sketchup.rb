@@ -59,7 +59,7 @@ module SketchUp
 	def to_definition(container, definition_name)
 	    case container
 		when Model::Extrusion
-		    lines = to_array(container.sketch, 'd.entities').map {|l| "#{l}.reverse!.pushpull(#{to_sketchup(container.length)})"}
+		    lines = to_array(container.sketch, 'd.entities').map {|l| "#{l}.pushpull(#{to_sketchup(-container.length)})"}
 		    elements = lines.flatten.join("\n\t")
 		    "lambda {|d|\n\t#{elements}\n}.call(model.definitions.add('#{definition_name}'))"
 		when Model::Group
@@ -81,14 +81,10 @@ module SketchUp
 	end
 
 	# Convert the given container to an array of strings that SketchUp can read
-	def to_array(container, parent='model.entities')
+	def to_array(container, parent='model.entities', transformation=nil)
 	    case container
 		when Model::Extrusion
-		    if container.transformation and not container.transformation.identity?
-			add_instance(parent, container)
-		    else
-			to_array(container.sketch, parent).map {|l| "#{l}.reverse!.pushpull(#{to_sketchup(container.length)})"}
-		    end
+		    to_array(container.sketch, parent, container.transformation).map {|l| "#{l}.pushpull(#{to_sketchup(-container.length)})"}
 		when Model::Group
 		    if container.transformation and not container.transformation.identity?
 			add_instance(parent, container)
@@ -102,15 +98,15 @@ module SketchUp
 			container.elements.map {|element| to_array(element, parent) }.flatten
 		    end
 		when Sketch
-		    container.geometry.map {|element| to_sketchup(element, parent) }
+		    container.geometry.map {|element| to_sketchup(element, parent, transformation) }
 	    end
 	end
 
 	# Convert the given entity to a string that SketchUp can read
-	def to_sketchup(entity, parent='model.entities')
+	def to_sketchup(entity, parent='model.entities', transformation=nil)
 	    case entity
 		when Array
-		    entity.map {|v| to_sketchup(v) }.join(', ')
+		    entity.map {|v| to_sketchup(v, parent, transformation) }.join(', ')
 		when Geometry::Arc
 		    "#{parent}.add_arc(#{to_sketchup(entity.center)}, [1,0,0], [0,0,1], #{to_sketchup(entity.radius)}, #{to_sketchup(entity.start_angle)}, #{to_sketchup(entity.end_angle)})"
 		when Geometry::Circle
@@ -120,25 +116,29 @@ module SketchUp
 		when Geometry::Line
 		    "#{parent}.add_line(#{to_sketchup(entity.first)}, #{to_sketchup(entity.last)})"
 		when Geometry::Path
-		    edges = entity.elements.map {|e| to_sketchup(e, parent) }.flatten.join '+'
+		    edges = entity.elements.map {|e| to_sketchup(e, parent, transformation) }.flatten.join '+'
 		    "#{parent}.add_face(#{edges})"
 		when Geometry::Polyline
-		    vertices = entity.vertices.map {|v| to_sketchup(v, parent) }.join ','
+		    vertices = entity.vertices.map {|v| to_sketchup(v, parent, transformation) }.join ','
 		    method = entity.is_a?(Geometry::Polygon) ? 'add_face' : 'add_curve'
 		    "#{parent}.#{method}(#{vertices})"
 		when Geometry::Point
-		    '[' + to_sketchup(entity.to_a) + ']'
+		    if transformation and not transformation.identity?
+			'Geom::Point3d.new(' + to_sketchup(entity.to_a) + ').transform!(' + to_sketchup(transformation) + ')'
+		    else
+			'[' + to_sketchup(entity.to_a) + ']'
+		    end
 		when Geometry::Polygon
-		    "#{parent}.add_face(#{to_sketchup(entity.points)})"
+		    "#{parent}.add_face(#{to_sketchup(entity.points, parent, transformation)})"
 		when Geometry::Rectangle
-		    "#{parent}.add_face(#{to_sketchup(entity.points)})"
+		    "#{parent}.add_face(#{to_sketchup(entity.points, parent, transformation)})"
 		when Geometry::Transformation
 		    pt = '[' + (entity.translation ? to_sketchup(entity.translation.to_a) : '0,0,0') + ']'
 		    x_axis = '[' + (entity.rotation.x ? to_sketchup(entity.rotation.x.to_a) : '1,0,0') + ']'
 		    y_axis = '[' + (entity.rotation.y ? to_sketchup(entity.rotation.y.to_a) : '0,1,0') + ']'
 		    "Geom::Transformation.new(#{[pt,x_axis,y_axis].join(',')})"
 		when Geometry::Triangle
-		    "#{parent}.add_face(#{to_sketchup(entity.points)})"
+		    "#{parent}.add_face(#{to_sketchup(entity.points, parent, transformation)})"
 		when Float
 		    entity.to_s
 		when Rational
