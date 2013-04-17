@@ -14,7 +14,7 @@ describe Model::Builder do
     describe "when adding an Extrusion with a length with units" do
 	before do
 	    builder.evaluate do
-		extrude 10.meters, Sketch.new do
+		extrude length:10.meters, sketch:Sketch.new do
 		    rectangle 5, 6
 		end
 	    end

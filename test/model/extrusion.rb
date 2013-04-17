@@ -10,11 +10,11 @@ describe Model::Extrusion do
     Extrusion = Model::Extrusion
     
     it "must not break normal construction" do
-	Extrusion.new(5, Sketch.new).must_be_instance_of(Extrusion)
+	Extrusion.new(length:5, sketch:Sketch.new).must_be_instance_of(Extrusion)
     end
 
     describe  "when the length parameter has units" do
-	let(:extrusionA) { Extrusion.new 5.meters, Sketch.new }
+	let(:extrusionA) { Extrusion.new length:5.meters, sketch:Sketch.new }
 	
 	it "must preserve the units" do
 	    extrusionA.length.must_equal 5.meters
@@ -23,7 +23,7 @@ describe Model::Extrusion do
     
     describe  "when the length parameter is a variable with units" do
 	let(:length) { 6.meters }
-	let(:extrusionA) { Extrusion.new 6.meters, Sketch.new }
+	let(:extrusionA) { Extrusion.new length:6.meters, sketch:Sketch.new }
 	
 	it "must preserve the units" do
 	    extrusionA.length.must_equal 6.meters

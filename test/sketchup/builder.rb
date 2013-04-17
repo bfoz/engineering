@@ -26,9 +26,8 @@ describe SketchUp::Builder do
 
     describe "when given an empty Model object" do
 	before do
-	    sketch = Sketch.new
 	    model = Model.new
-	    model.add_extrusion Model::Extrusion.new(5, sketch)
+	    model.add_extrusion Model::Extrusion.new(length:5, sketch:Sketch.new)
 	    @builder.container = model
 	end
 
@@ -42,7 +41,7 @@ describe SketchUp::Builder do
 	sketch.add_rectangle 10, 20
 	before do
 	    subject.container = Model.new do
-		add_extrusion Model::Extrusion.new(5, sketch, Geometry::Transformation.new(origin:[1,2,3]))
+		add_extrusion Model::Extrusion.new(length:5, sketch:sketch, transformation:Geometry::Transformation.new(origin:[1,2,3]))
 	    end
 	end
 
@@ -55,7 +54,7 @@ describe SketchUp::Builder do
 	sketch = Sketch.new
 	sketch.add_rectangle 10, 20
 	model = Model.new do
-	    add_extrusion Model::Extrusion.new(5, sketch)
+	    add_extrusion Model::Extrusion.new(length:5, sketch:sketch)
 	end
 	@builder.container = model
 	@builder.to_s.must_equal File.read('test/fixtures/sketchup/simple_extrusion.su')
@@ -65,7 +64,7 @@ describe SketchUp::Builder do
 	sketch = Sketch.new
 	sketch.add_rectangle 1.meter, 10
 	model = Model.new
-	model.add_extrusion Model::Extrusion.new(5.meters, sketch)
+	model.add_extrusion Model::Extrusion.new(length:5.meters, sketch:sketch)
 	@builder.container = model
 	@builder.to_s.must_equal File.read('test/fixtures/sketchup/simple_extrusion_units.su')
     end
@@ -113,7 +112,6 @@ describe SketchUp::Builder do
     it "Path" do
 	sketch = Sketch.new
 	sketch.add_path [0,0], Geometry::Arc.new([0,0],5,0,90*Math::PI/180), [0,0]
-	builder = SketchUp::Builder.new( Model::Builder.new.evaluate { extrude 5, sketch })
-	p builder.to_s
+	builder = SketchUp::Builder.new( Model::Builder.new.evaluate { extrude length:5, sketch:sketch })
     end
 end

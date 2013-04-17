@@ -19,7 +19,7 @@ describe Engineering do
     describe "when creating a named Model subclass" do
 	before do
 	    model :TestModel do
-		extrude 10 do
+		extrude length:10 do
 		    square 5
 		end
 	    end
@@ -44,7 +44,7 @@ describe Engineering do
 	describe "when another model class is created with a new name" do
 	    before do
 		model :TestModel2 do
-		    extrude 5 do
+		    extrude length:5 do
 			square 10
 		    end
 		end
@@ -79,7 +79,7 @@ describe Engineering do
 	before do
 	    LENGTH = 5
 	    model :TestModel3 do
-		extrude LENGTH do
+		extrude length: LENGTH do
 		    square 5
 		end
 	    end
