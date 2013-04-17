@@ -1,0 +1,7 @@
+model = Sketchup.active_model
+model.entities.clear!
+model.definitions.purge_unused
+lambda {|d|
+	d.entities.add_face\(\[-5.0, -10.0\], \[-5.0, 10.0\], \[5.0, 10.0\], \[5.0, -10.0\]\).pushpull\(-5\)
+}.call\(model.definitions.add\('Model::Extrusion\(Sketch:\d+\)_5'\)\)
+model.entities.add_instance\(model.definitions\['Model::Extrusion\(Sketch:\d+\)_5'\], Geom::Transformation.new\(\[1, 2, 3\],\[1,0,0\],\[0,1,0\]\)\)

@@ -84,7 +84,11 @@ module SketchUp
 	def to_array(container, parent='model.entities', transformation=nil)
 	    case container
 		when Model::Extrusion
-		    to_array(container.sketch, parent, container.transformation).map {|l| "#{l}.pushpull(#{to_sketchup(-container.length)})"}
+		    if container.transformation and not container.transformation.identity?
+			add_instance(parent, container)
+		    else
+			to_array(container.sketch, parent, container.transformation).map {|l| "#{l}.pushpull(#{to_sketchup(-container.length)})"}
+		    end
 		when Model::Group
 		    if container.transformation and not container.transformation.identity?
 			add_instance(parent, container)
