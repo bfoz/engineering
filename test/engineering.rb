@@ -75,6 +75,38 @@ describe Engineering do
 	end
     end
 
+    describe "when creating an Extrusion subclass" do
+	after do
+	    Object.send(:remove_const, :TestExtrusion)
+	end
+
+	before do
+	    extrusion :TestExtrusion do
+		square 5
+	    end
+	end
+
+	it "must create a global constant" do
+	    Object.constants.include?(:TestExtrusion).must_equal true
+	end
+
+	it "must be a subclass of Extrusion" do
+	    (TestExtrusion < Model::Extrusion).must_equal true
+	end
+
+	describe "when initializing a new instance" do
+	    subject { TestExtrusion.new(length: 5) }
+
+	    it "must create instances of the proper class" do
+		subject.must_be_kind_of Model::Extrusion
+	    end
+
+	    it "must call the initializer block" do
+		subject.length.must_equal 5
+	    end
+	end
+    end
+
     describe "when creating a Model that uses global constants" do
 	before do
 	    LENGTH = 5
