@@ -8,14 +8,8 @@ describe SketchUp::Builder do
     	@builder = SketchUp::Builder.new
     end
 
-    let(:header_lines)	    { SketchUp::HEADER_LINES }
-    let(:empty_model_data)  { header_lines.join "\n" }
-    let(:simple_extrusion_model_data)	{ (header_lines + ['model.entities.add_face([-5.0, -10.0], [-5.0, 10.0], [5.0, 10.0], [5.0, -10.0]).pushpull(-5)']).join "\n" }
-    let(:simple_extrusion_units_model_data)	{ (header_lines + ['model.entities.add_face([-0.5.m, -5.0], [-0.5.m, 5.0], [0.5.m, 5.0], [0.5.m, -5.0]).pushpull(-5.m)']).join "\n" }
-
-    let(:empty_sketch_data) { header_lines.join "\n" }
-    let(:line_sketch_data)  { (header_lines + ['model.entities.add_line([0, 0], [1, 0])']).join "\n" }
-    let(:rectangle_sketch_data)	{ (header_lines + ['model.entities.add_face([0, 0], [0, 1], [1, 1], [1, 0])']).join "\n" }
+    let(:empty_fixture)		    { File.read('test/fixtures/sketchup/empty.su') }
+    let(:rectangle_sketch_fixture)  { File.read('test/fixtures/sketchup/rectangle_sketch.su') }
 
     it "should keep private methods private" do
 	@builder.wont_respond_to :to_array
@@ -39,7 +33,7 @@ describe SketchUp::Builder do
 	end
 
 	it "should export the correct file" do
-	    @builder.to_s.must_equal empty_model_data
+	    @builder.to_s.must_equal empty_fixture
 	end
     end
 
@@ -64,7 +58,7 @@ describe SketchUp::Builder do
 	    add_extrusion Model::Extrusion.new(5, sketch)
 	end
 	@builder.container = model
-	@builder.to_s.must_equal simple_extrusion_model_data
+	@builder.to_s.must_equal File.read('test/fixtures/sketchup/simple_extrusion.su')
     end
 
     it "should generate the correct text from a Model of a simple extrusion with units" do
@@ -73,33 +67,33 @@ describe SketchUp::Builder do
 	model = Model.new
 	model.add_extrusion Model::Extrusion.new(5.meters, sketch)
 	@builder.container = model
-	@builder.to_s.must_equal simple_extrusion_units_model_data
+	@builder.to_s.must_equal File.read('test/fixtures/sketchup/simple_extrusion_units.su')
     end
 
     it "should generate correct text from an empty Sketch" do
 	@builder.container = Sketch.new
-	@builder.to_s.must_equal empty_sketch_data
+	@builder.to_s.must_equal empty_fixture
     end
 
     it "should generate correct text from a simple Sketch object" do
 	sketch = Sketch.new
 	sketch.add_line [0,0], [1,0]
 	@builder.container = sketch
-	@builder.to_s.must_equal line_sketch_data
+	@builder.to_s.must_equal File.read('test/fixtures/sketchup/line_sketch.su')
     end
 
     it "should generate correct text from a Sketch object with a single Rectangle" do
 	sketch = Sketch.new
-	sketch.add_rectangle [0,0], [1,1]
+	sketch.add_rectangle [0,0], Geometry::Size[1,1]
 	@builder.container = sketch
-	@builder.to_s.must_equal rectangle_sketch_data
+	@builder.to_s.must_equal rectangle_sketch_fixture
     end
 
     it "should generate correct text from a Sketch object with a single Polygon" do
 	sketch = Sketch.new
 	sketch.add_polygon [0,0], [0,1], [1,1], [1,0], [0,0]
 	@builder.container = sketch
-	@builder.to_s.must_equal rectangle_sketch_data
+	@builder.to_s.must_equal rectangle_sketch_fixture
     end
 
     it "must handle a Group" do

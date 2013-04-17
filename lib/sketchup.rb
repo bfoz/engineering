@@ -36,7 +36,7 @@ module SketchUp
 	end
 
 	def to_s
-	    to_a.join "\n"
+	    to_a.join("\n") << "\n"
 	end
 
 	private
@@ -123,7 +123,7 @@ module SketchUp
 		    edges = entity.elements.map {|e| to_sketchup(e, parent, transformation) }.flatten.join '+'
 		    "#{parent}.add_face(#{edges})"
 		when Geometry::Polyline
-		    vertices = entity.vertices.map {|v| to_sketchup(v, parent, transformation) }.join ','
+		    vertices = entity.vertices.map {|v| to_sketchup(v, parent, transformation) }.join ', '
 		    method = entity.is_a?(Geometry::Polygon) ? 'add_face' : 'add_curve'
 		    "#{parent}.#{method}(#{vertices})"
 		when Geometry::Point
