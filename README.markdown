@@ -1,7 +1,7 @@
 Engineering for Ruby
 ====================
 
-This is a meta-gem for all things related to engineering. The Engineering module
+This is a meta-gem for all things related to engineering (particularly CAD stuff). The Engineering module
 is your one stop shop for all of the tools you need for your latest mad-engineering project.
 
 Activating a dormant volcano? Adding death rays to your secret moon base? Plotting world domination? No problem! There's a gem for that, and you've found it right here.
