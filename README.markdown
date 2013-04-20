@@ -14,7 +14,7 @@ the module and adds whatever is missing, if that's more your style.
 License
 -------
 
-Copyright 2012 Brandon Fosdick <bfoz@bfoz.net> and released under the BSD license.
+Copyright 2012-2013 Brandon Fosdick <bfoz@bfoz.net> and released under the BSD license.
 
 Dependencies
 ------------
