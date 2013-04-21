@@ -85,11 +85,21 @@ Creating a custom Cube class, the hard way:
 
     model :MyCube do
         extrusion 10.cm do
-            add_square 10.cm
+            square 10.cm
         end
     end
-
+    
     MyCube.new
+
+Of course, this is ruby, so there's always another way to do it
+
+    extrusion :MyCube do
+        rectangle Size[10.cm, 10.cm]
+    end
+    
+    MyCube.new length:10.cm
+
+### Exporting
 
 Once a Model has been defined, it can be instantiated and exported to SketchUp with a single line
 
