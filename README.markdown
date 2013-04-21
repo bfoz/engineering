@@ -19,6 +19,7 @@ Copyright 2012-2013 Brandon Fosdick <bfoz@bfoz.net> and released under the BSD l
 Dependencies
 ------------
 
+- DXF [GitHub](http://github.com/bfoz/ruby-dxf) [RubyGems](https://rubygems.org/gems/dxf)
 - Units [GitHub](https://github.com/bfoz/units)
 - Geometry [GitHub](https://github.com/bfoz/geometry) [RubyGems](https://rubygems.org/gems/geometry)
 - Sketch [GitHub](https://github.com/bfoz/sketch)

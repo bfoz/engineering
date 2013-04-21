@@ -1,10 +1,10 @@
 require 'mathn'
 
+require 'dxf'
 require 'model'
 require 'sketch'
 require 'units'
 
-require_relative 'dxf'
 require_relative 'sketchup'
 
 =begin
