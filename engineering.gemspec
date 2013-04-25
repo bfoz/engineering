@@ -17,8 +17,8 @@ Gem::Specification.new do |s|
     s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
     s.require_paths = ["lib"]
 
-    s.add_dependency	'dxf'
+    s.add_dependency	'dxf', '~> 0.2'
     s.add_dependency	'model'
     s.add_dependency	'sketch'
-    s.add_dependency	'units', '>= 2'
+    s.add_dependency	'units', '~> 2.1'
 end
