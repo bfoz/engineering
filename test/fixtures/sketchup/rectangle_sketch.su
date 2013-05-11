@@ -1,0 +1,4 @@
+model = Sketchup.active_model
+model.entities.clear!
+model.definitions.purge_unused
+model.entities.add_face([0, 0], [0, 1], [1, 1], [1, 0])
