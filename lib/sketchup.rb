@@ -101,12 +101,21 @@ module SketchUp
 		    else
 			container.elements.map {|element| to_array(element, parent) }.flatten
 		    end
-		when Sketch
-		    container.geometry.map {|element| to_sketchup(element, parent, transformation) }
+		when Sketch::Group
+		    container.geometry.map {|element| to_sketchup(element, parent, container.transformation) }.flatten
+		when Sketch  # !!! Must be after all subclasses of Sketch
+		    container.geometry.map do |element|
+			case element
+			    when Sketch::Group then to_array(element, parent)
+			    else
+				to_sketchup(element, parent, transformation)
+			end
+		    end.flatten
 	    end
 	end
 
 	# Convert the given entity to a string that SketchUp can read
+	# @return [String]
 	def to_sketchup(entity, parent='model.entities', transformation=nil)
 	    case entity
 		when Array
@@ -114,7 +123,7 @@ module SketchUp
 		when Geometry::Arc
 		    "#{parent}.add_arc(#{to_sketchup(entity.center)}, [1,0,0], [0,0,1], #{to_sketchup(entity.radius)}, #{to_sketchup(entity.start_angle)}, #{to_sketchup(entity.end_angle)})"
 		when Geometry::Circle
-		    "lambda{ points = #{parent}.add_circle(#{to_sketchup(entity.center)}, [0,0,1], #{to_sketchup(entity.radius)}); points[0].find_faces; points[0].faces[0]}.call"
+		    "lambda{ points = #{parent}.add_circle(#{to_sketchup(entity.center, parent, transformation)}, [0,0,1], #{to_sketchup(entity.radius)}); points[0].find_faces; points[0].faces[0]}.call"
 		when Geometry::Edge
 		    "#{parent}.add_edges(#{to_sketchup(entity.first)}, #{to_sketchup(entity.last)})"
 		when Geometry::Line
@@ -127,7 +136,7 @@ module SketchUp
 		    method = entity.is_a?(Geometry::Polygon) ? 'add_face' : 'add_curve'
 		    "#{parent}.#{method}(#{vertices})"
 		when Geometry::PointZero
-		    to_sketchup(Point[0,0])
+		    to_sketchup(Point[0,0], parent, transformation)
 		when Geometry::Point
 		    if transformation and not transformation.identity?
 			'Geom::Point3d.new(' + to_sketchup(entity.to_a) + ').transform!(' + to_sketchup(transformation) + ')'

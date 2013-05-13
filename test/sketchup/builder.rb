@@ -111,6 +111,20 @@ describe SketchUp::Builder do
 	builder.to_s.must_match %r{model = Sketchup.active_model\nmodel.entities.clear!\nmodel.definitions.purge_unused\nlambda {|m|\n\t\n}.call(model.definitions.add('Model(\d+)'))\nmodel.entities.add_instance(model.definitions\['Model(\d+)'\], Geom::Transformation.new(\[3, 2, 1\],\[1,0,0\],\[0,1,0\]))}
     end
 
+    describe "when unparsing a Sketch" do
+	describe "when the Sketch has a Group" do
+	    before do
+		builder = Sketch::Builder.new
+		builder.group origin:[1,2] { circle diameter:1 }
+		subject.container = builder.sketch
+	    end
+
+	    it "must generate the correct text" do
+		subject.to_s.must_equal File.read('test/fixtures/sketchup/sketch_group.su')
+	    end
+	end
+    end
+
     it "Path" do
 	sketch = Sketch.new
 	sketch.add_path [0,0], Geometry::Arc.new([0,0],5,0,90*Math::PI/180), [0,0]
