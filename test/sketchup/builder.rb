@@ -2,6 +2,8 @@ require 'minitest/autorun'
 require 'sketchup'
 
 describe SketchUp::Builder do
+    Size = Geometry::Size
+
     subject { SketchUp::Builder.new }
 
     before do
@@ -38,7 +40,7 @@ describe SketchUp::Builder do
 
     describe "when given a Model of a translated Extrusion" do
 	sketch = Sketch.new
-	sketch.add_rectangle 10, 20
+	sketch.add_rectangle size:[10, 20]
 	before do
 	    subject.container = Model.new do
 		add_extrusion Model::Extrusion.new(length:5, sketch:sketch, transformation:Geometry::Transformation.new(origin:[1,2,3]))
@@ -52,7 +54,7 @@ describe SketchUp::Builder do
 
     it "should generate the correct text from a Model of a simple extrusion" do
 	sketch = Sketch.new
-	sketch.add_rectangle 10, 20
+	sketch.add_rectangle size:[10, 20]
 	model = Model.new do
 	    add_extrusion Model::Extrusion.new(length:5, sketch:sketch)
 	end
@@ -62,7 +64,7 @@ describe SketchUp::Builder do
 
     it "should generate the correct text from a Model of a simple extrusion with units" do
 	sketch = Sketch.new
-	sketch.add_rectangle 1.meter, 10
+	sketch.add_rectangle size:[1.meter, 10]
 	model = Model.new
 	model.add_extrusion Model::Extrusion.new(length:5.meters, sketch:sketch)
 	@builder.container = model
@@ -83,7 +85,7 @@ describe SketchUp::Builder do
 
     it "should generate correct text from a Sketch object with a single Rectangle" do
 	sketch = Sketch.new
-	sketch.add_rectangle [0,0], Geometry::Size[1,1]
+	sketch.add_rectangle origin:[0,0], size:[1,1]
 	@builder.container = sketch
 	@builder.to_s.must_equal rectangle_sketch_fixture
     end

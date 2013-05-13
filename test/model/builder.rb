@@ -15,7 +15,7 @@ describe Model::Builder do
 	before do
 	    builder.evaluate do
 		extrude length:10.meters, sketch:Sketch.new do
-		    rectangle 5, 6
+		    rectangle size:[5, 6]
 		end
 	    end
 	end

@@ -1,4 +1,4 @@
 model = Sketchup.active_model
 model.entities.clear!
 model.definitions.purge_unused
-model.entities.add_face([-0.5.m, -5.0], [-0.5.m, 5.0], [0.5.m, 5.0], [0.5.m, -5.0]).pushpull(-5.m)
+model.entities.add_face([0, 0], [0, 10], [1.m, 10], [1.m, 0]).pushpull(-5.m)

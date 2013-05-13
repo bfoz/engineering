@@ -126,6 +126,8 @@ module SketchUp
 		    vertices = entity.vertices.map {|v| to_sketchup(v, parent, transformation) }.join ', '
 		    method = entity.is_a?(Geometry::Polygon) ? 'add_face' : 'add_curve'
 		    "#{parent}.#{method}(#{vertices})"
+		when Geometry::PointZero
+		    to_sketchup(Point[0,0])
 		when Geometry::Point
 		    if transformation and not transformation.identity?
 			'Geom::Point3d.new(' + to_sketchup(entity.to_a) + ').transform!(' + to_sketchup(transformation) + ')'
