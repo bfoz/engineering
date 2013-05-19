@@ -127,7 +127,7 @@ describe SketchUp::Builder do
 
     it "Path" do
 	sketch = Sketch.new
-	sketch.add_path [0,0], Geometry::Arc.new([0,0],5,0,90*Math::PI/180), [0,0]
+	sketch.add_path [0,0], Geometry::Arc.new(center:[0,0], radius:5, start:0, end:90*Math::PI/180), [0,0]
 	builder = SketchUp::Builder.new( Model::Builder.new.evaluate { extrude length:5, sketch:sketch })
     end
 end
