@@ -83,6 +83,13 @@ describe SketchUp::Builder do
 	@builder.to_s.must_equal File.read('test/fixtures/sketchup/line_sketch.su')
     end
 
+    describe "when given a Sketch" do
+	it "must RegularPolygon" do
+	    subject.container = Sketch.new.tap {|s| s.push RegularPolygon.new(sides:6, center:[0,0], radius:5) }
+	    subject.to_s.must_equal File.read('test/fixtures/sketchup/hexagon_sketch.su')
+	end
+    end
+
     it "should generate correct text from a Sketch object with a single Rectangle" do
 	sketch = Sketch.new
 	sketch.add_rectangle origin:[0,0], size:[1,1]
