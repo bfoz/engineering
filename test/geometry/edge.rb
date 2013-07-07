@@ -20,4 +20,12 @@ describe Geometry::Edge do
 	    edge.last.must_equal Point[4.meters, 5.meters]
 	end
     end
+
+    it "must preserve units in the vector method" do
+	Edge.new([0.meters, 0.meters], [1.meter, 0.meters]).vector.must_equal Point[1.meter, 0.meters]
+    end
+
+    it "must not preserve units in the direction method" do
+	Edge.new([0.meters, 0.meters], [1.meter, 0.meters]).direction.must_equal Point[1, 0]
+    end
 end
