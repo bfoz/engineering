@@ -31,7 +31,7 @@ module SketchUp
 	end
 
 	def to_a
-	    a = to_array(@container)	# Generates the definitions as a side effect
+	    a = to_array(@container) || []	# Generates the definitions as a side effect
 	    HEADER_LINES + @definition_names.values.flatten + a
 	end
 
