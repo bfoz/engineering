@@ -32,9 +32,8 @@ module Engineering
 	end
 
 	# Create a new {Model} subclass and initialize it with the given block
-	# @param [Symbol]   symbol  The name of the {Model} subclass
-	# @return [Model]
-	def model(symbol=nil, &block)
+	# @param name [Symbol]	The name of the new {Model} subclass
+	def model(name, &block)
 	    klass = Class.new(Model)
 	    builder = Model::Builder.new
 	    builder.evaluate(&block) if block_given?
@@ -45,7 +44,7 @@ module Engineering
 		initial_elements.each {|a| push a }
 	    end
 
-	    symbol ? Object.const_set(symbol, klass) : klass
+	    Object.const_set(name, klass)
 	end
 
 	# Create a new {Sketch} subclass and initialize it with the given block
