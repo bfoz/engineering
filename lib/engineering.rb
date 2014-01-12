@@ -36,13 +36,15 @@ module Engineering
 	# @return [Model]
 	def model(symbol=nil, &block)
 	    klass = Class.new(Model)
-	    klass.const_set(:INITIALIZER_BLOCK, block)
-	    klass.class_eval %q[
-		def initialize(*args)
-		    super
-		    Model::Builder.new(self).evaluate(&INITIALIZER_BLOCK)
-		end
-	    ]
+	    builder = Model::Builder.new
+	    builder.evaluate(&block) if block_given?
+	    initial_elements = builder.elements
+
+	    klass.send :define_method, :initialize do |*args, &block|
+		super *args, &block
+		initial_elements.each {|a| push a }
+	    end
+
 	    symbol ? Object.const_set(symbol, klass) : klass
 	end
 
