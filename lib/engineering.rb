@@ -60,14 +60,16 @@ module Engineering
 	# Create a new {Sketch} subclass and initialize it with the given block
 	# @param [Symbol]   symbol  The name of the {Sketch} subclass
 	def sketch(symbol=nil, &block)
+	    builder = Sketch::Builder.new
+	    builder.evaluate(&block) if block_given?
+	    initial_elements = builder.elements
+
 	    klass = Class.new(Sketch)
-	    klass.const_set(:INITIALIZER_BLOCK, block)
-	    klass.class_eval %q[
-		def initialize(*args)
-		    super
-		    Sketch::Builder.new(self).evaluate(&INITIALIZER_BLOCK)
-		end
-	    ]
+	    klass.send :define_method, :initialize do |*args, &block|
+		super *args, &block
+		initial_elements.each {|a| push a }
+	    end
+
 	    symbol ? Object.const_set(symbol, klass) : klass
 	end
 
