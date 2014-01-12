@@ -29,7 +29,7 @@ describe SketchUp::Builder do
     describe "when given an empty Model object" do
 	before do
 	    model = Model.new
-	    model.add_extrusion Model::Extrusion.new(length:5, sketch:Sketch.new)
+	    model.push Model::Extrusion.new(length:5, sketch:Sketch.new)
 	    @builder.container = model
 	end
 
@@ -43,7 +43,7 @@ describe SketchUp::Builder do
 	sketch.add_rectangle size:[10, 20]
 	before do
 	    subject.container = Model.new do
-		add_extrusion Model::Extrusion.new(length:5, sketch:sketch, transformation:Geometry::Transformation.new(origin:[1,2,3]))
+		push Model::Extrusion.new(length:5, sketch:sketch, transformation:Geometry::Transformation.new(origin:[1,2,3]))
 	    end
 	end
 
@@ -56,7 +56,7 @@ describe SketchUp::Builder do
 	sketch = Sketch.new
 	sketch.add_rectangle size:[10, 20]
 	model = Model.new do
-	    add_extrusion Model::Extrusion.new(length:5, sketch:sketch)
+	    push Model::Extrusion.new(length:5, sketch:sketch)
 	end
 	@builder.container = model
 	@builder.to_s.must_equal File.read('test/fixtures/sketchup/simple_extrusion.su')
@@ -66,7 +66,7 @@ describe SketchUp::Builder do
 	sketch = Sketch.new
 	sketch.add_rectangle size:[1.meter, 10]
 	model = Model.new
-	model.add_extrusion Model::Extrusion.new(length:5.meters, sketch:sketch)
+	model.push Model::Extrusion.new(length:5.meters, sketch:sketch)
 	@builder.container = model
 	@builder.to_s.must_equal File.read('test/fixtures/sketchup/simple_extrusion_units.su')
     end
