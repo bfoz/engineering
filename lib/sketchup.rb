@@ -161,7 +161,7 @@ module SketchUp
 		when Units
 		    s = entity.to_s
 		    SKETCHUP_UNITS[s] or raise "SketchUp won't recognize '#{s}'"
-		when Units::Literal
+		when Units::Numeric
 		    [entity.value, entity.units].compact.map {|a| to_sketchup(a)}.join '.'
 		else
 		    entity.to_s

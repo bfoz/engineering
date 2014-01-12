@@ -8,10 +8,10 @@ require 'units'
 #  there's no good way to test their integration at a lower level.
 
 def Literal(*args)
-    Units::Literal.new(*args)
+    Units::Numeric.new(*args)
 end
 
-describe Units::Literal do
+describe Units::Numeric do
     let(:one_meter)	{ Literal(1, :meter) }
     let(:three_meters)	{ Literal(3, :meters) }
     let(:four_meters)	{ Literal(4, :meters) }
