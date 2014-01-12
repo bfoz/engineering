@@ -17,9 +17,8 @@ module Engineering
 	private
 
 	# Create a new {Extrusion} subclass and initialize it with the given block
-	# @param [Symbol] symbol    The name of the resulting subclass
-	# @return [Extrusion]
-	def extrusion(symbol=nil, &block)
+	# @param name [Symbol]    The name of the resulting subclass
+	def extrusion(symbol, &block)
 	    builder = Model::Extrusion::Builder.new
 	    builder.evaluate(&block) if block_given?
 	    initial_arguments = {sketch: builder.extrusion.sketch, length: builder.extrusion.length}.select {|k,v| v }
@@ -29,7 +28,7 @@ module Engineering
 		super initial_arguments.merge(options), &block
 	    end
 
-	    symbol ? Object.const_set(symbol, klass) : klass
+	    Object.const_set(symbol, klass)
 	end
 
 	# Create a new {Model} subclass and initialize it with the given block
@@ -59,8 +58,8 @@ module Engineering
 	end
 
 	# Create a new {Sketch} subclass and initialize it with the given block
-	# @param [Symbol]   symbol  The name of the {Sketch} subclass
-	def sketch(symbol=nil, &block)
+	# @param name [Symbol]  The name of the {Sketch} subclass
+	def sketch(symbol, &block)
 	    builder = Sketch::Builder.new
 	    builder.evaluate(&block) if block_given?
 	    initial_elements = builder.elements
@@ -71,7 +70,7 @@ module Engineering
 		initial_elements.each {|a| push a }
 	    end
 
-	    symbol ? Object.const_set(symbol, klass) : klass
+	    Object.const_set(symbol, klass)
 	end
 
 	class Geometry::Polygon
