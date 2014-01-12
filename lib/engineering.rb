@@ -39,8 +39,18 @@ module Engineering
 	    builder.evaluate(&block) if block_given?
 	    initial_elements = builder.elements
 
+	    # The defaults are hidden in an instance variable so that the passed block can't accidentally corrupt them
+	    attribute_defaults = builder.instance_variable_get(:@attribute_defaults) || {}
+
+	    # Bind any attribute getters and setters to the new subclass
+	    attribute_getters = builder.instance_variable_get(:@attribute_getters) || {}
+	    attribute_getters.each {|k, m| klass.send :define_method, k, m }
+
+	    attribute_setters = builder.instance_variable_get(:@attribute_setters) || {}
+	    attribute_setters.each {|k, m| klass.send :define_method, k, m }
+
 	    klass.send :define_method, :initialize do |*args, &block|
-		super *args, &block
+		super *(attribute_defaults.map {|k,v| { k => (v.respond_to?(:call) ? v.call : v) } }), *args, &block
 		initial_elements.each {|a| push a }
 	    end
 

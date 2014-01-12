@@ -75,6 +75,45 @@ describe Engineering do
 	end
     end
 
+    describe 'when creating a Model subclass with attributes' do
+	before do
+	    model :TestModel4 do
+		attribute :attribute0
+	    end
+	end
+
+	it 'must define the attributes' do
+	    TestModel4.new.must_be :respond_to?, :attribute0
+	    TestModel4.new.must_be :respond_to?, :attribute0=
+	end
+
+	it 'must have working accessors' do
+	    test_model = TestModel4.new
+	    test_model.attribute0 = 42
+	    test_model.attribute0.must_equal 42
+	end
+
+	it 'must be able to initialize the attribute during construction' do
+	    TestModel4.new(attribute0: 37).attribute0.must_equal 37
+	end
+    end
+
+    describe 'when creating a Model subclass with attributes that have default values' do
+	subject do
+	    model :TestModel5 do
+		attribute :attribute0, 42
+	    end
+	end
+
+	it 'must have the default value' do
+	    subject.new.attribute0.must_equal 42
+	end
+
+	it 'must allow the default value to be overriden' do
+	    subject.new(attribute0: 24).attribute0.must_equal 24
+	end
+    end
+
     describe "when creating an Extrusion subclass" do
 	after do
 	    Object.send(:remove_const, :TestExtrusion)
