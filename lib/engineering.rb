@@ -20,14 +20,15 @@ module Engineering
 	# @param [Symbol] symbol    The name of the resulting subclass
 	# @return [Extrusion]
 	def extrusion(symbol=nil, &block)
+	    builder = Model::Extrusion::Builder.new
+	    builder.evaluate(&block) if block_given?
+	    initial_arguments = {sketch: builder.extrusion.sketch, length: builder.extrusion.length}.select {|k,v| v }
+
 	    klass = Class.new(Model::Extrusion)
-	    klass.const_set(:INITIALIZER_BLOCK, block)
-	    klass.class_eval %q[
-		def initialize(*args)
-		    super
-		    Model::Extrusion::Builder.new(self).evaluate(&INITIALIZER_BLOCK)
-		end
-	    ]
+	    klass.send :define_method, :initialize do |options={}, &block|
+		super initial_arguments.merge(options), &block
+	    end
+
 	    symbol ? Object.const_set(symbol, klass) : klass
 	end
 
