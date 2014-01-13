@@ -30,7 +30,7 @@ Installation
 
 Engineering has a number of dependencies. Some of which are hosted on rubygems.org
 and can therefore be handled by the gem utility, but others must be installed
-manually. The easiest option is to use [Bundler](http://gembundler.com/), but
+manually. The easiest option is to use [Bundler](http://bundler.io/), but
 *gem* can be used if you're willing to install the *units* gem manually.
 
 ### Using Bundler
