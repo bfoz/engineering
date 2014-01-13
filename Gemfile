@@ -4,4 +4,4 @@ source "http://rubygems.org"
 gemspec
 
 gem 'model', github: 'bfoz/model'
-gem 'units', github: 'bfoz/units'
+gem 'units', github: 'bfoz/units-ruby
