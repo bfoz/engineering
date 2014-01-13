@@ -146,6 +146,31 @@ describe Engineering do
 	end
     end
 
+    describe 'when creating an Extrusion subclass with a length' do
+	after { Object.send :remove_const, :TestExtrusion }
+
+	before do
+	    extrusion :TestExtrusion do
+		length 10
+		square 5
+	    end
+	end
+
+	it 'must have a class attribute for the length' do
+	    TestExtrusion.length.must_equal 10
+	end
+
+	describe 'when initializing a new instance' do
+	    it 'must reject a length argument' do
+		-> { TestExtrusion.new(length:5) }.must_raise ArgumentError
+	    end
+
+	    it 'must have the proper length' do
+		TestExtrusion.new.length.must_equal 10
+	    end
+	end
+    end
+
     describe "when creating a Model that uses global constants" do
 	before do
 	    LENGTH = 5

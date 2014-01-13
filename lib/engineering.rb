@@ -24,7 +24,12 @@ module Engineering
 	    initial_arguments = {sketch: builder.extrusion.sketch, length: builder.extrusion.length}.select {|k,v| v }
 
 	    klass = Class.new(Model::Extrusion)
+	    if initial_arguments.has_key?(:length)
+		klass.instance_variable_set :@length, initial_arguments[:length]
+		klass.class.send(:define_method, :length) { @length }
+	    end
 	    klass.send :define_method, :initialize do |options={}, &block|
+		raise ArgumentError, "Can't initialize with a length when #{self} already has a length attribute" if initial_arguments.has_key?(:length) and options.has_key?(:length)
 		super initial_arguments.merge(options), &block
 	    end
 
