@@ -20,7 +20,7 @@ Dependencies
 ------------
 
 - DXF [GitHub](http://github.com/bfoz/ruby-dxf) [RubyGems](https://rubygems.org/gems/dxf)
-- Units [GitHub](https://github.com/bfoz/units)
+- Units [GitHub](https://github.com/bfoz/units-ruby)
 - Geometry [GitHub](https://github.com/bfoz/geometry) [RubyGems](https://rubygems.org/gems/geometry)
 - Sketch [GitHub](https://github.com/bfoz/sketch)
 - Model [GitHub](https://github.com/bfoz/model)
