@@ -24,7 +24,6 @@ describe Engineering do
 		end
 	    end
 	end
-	let(:testModel) { TestModel.new }
 
 	it "must create a global constant" do
 	    Object.constants.include?(:TestModel).must_equal true
@@ -49,18 +48,18 @@ describe Engineering do
 		    end
 		end
 	    end
-	    let(:testModel2) { TestModel2.new }
+	    subject { TestModel2.new }
 
 	    it "must be able to make new instances" do
-		testModel2.must_be_kind_of Model
-		testModel2.must_be_instance_of TestModel2
-		testModel2.wont_be_instance_of TestModel
+		subject.must_be_kind_of Model
+		subject.must_be_instance_of TestModel2
+		subject.wont_be_instance_of TestModel
 	    end
 
 	    it "must call the correct initializer block when constructed" do
-		testModel2.elements.count.must_equal 1
-		testModel2.elements.first.must_be_instance_of Model::Extrusion
-		testModel2.elements.first.length.must_equal 5
+		subject.elements.count.must_equal 1
+		subject.elements.first.must_be_instance_of Model::Extrusion
+		subject.elements.first.length.must_equal 5
 	    end
 
 	    describe "when the original Model class is used again" do
@@ -197,20 +196,20 @@ describe Engineering do
 		square 5
 	    end
 	end
-	let(:testSketch) { TestSketch.new }
+	subject { TestSketch.new }
 
 	it "must create a global constant" do
 	    Object.constants.include?(:TestSketch).must_equal true
 	end
 
 	it "must support creating instances of the subclass" do
-	    testSketch.must_be_kind_of Sketch
-	    testSketch.must_be_kind_of TestSketch
+	    subject.must_be_kind_of Sketch
+	    subject.must_be_kind_of TestSketch
 	end
 
 	it "must call the initializer block when constructed" do
-	    testSketch.elements.count.must_equal 1
-	    testSketch.elements.first.must_be_kind_of Geometry::Square
+	    subject.elements.count.must_equal 1
+	    subject.elements.first.must_be_kind_of Geometry::Square
 	end
 
 	describe "when another sketch class is created with a new name" do
@@ -219,17 +218,17 @@ describe Engineering do
 		    square 10
 		end
 	    end
-	    let(:testSketch2) { TestSketch2.new }
+	    subject { TestSketch2.new }
 
 	    it "must be able to make new instances" do
-		testSketch2.must_be_kind_of Sketch
-		testSketch2.must_be_kind_of TestSketch2
-		testSketch2.wont_be_kind_of TestSketch
+		subject.must_be_kind_of Sketch
+		subject.must_be_kind_of TestSketch2
+		subject.wont_be_kind_of TestSketch
 	    end
 
 	    it "must call the correct initializer block when constructed" do
-		testSketch2.elements.count.must_equal 1
-		testSketch2.elements.first.must_be_kind_of Geometry::Square
+		subject.elements.count.must_equal 1
+		subject.elements.first.must_be_kind_of Geometry::Square
 	    end
 
 	    describe "when the original Sketch class is used again" do
