@@ -133,6 +133,10 @@ describe Engineering do
 	    (TestExtrusion < Model::Extrusion).must_equal true
 	end
 
+	it 'must have a class attribute for the Sketch' do
+	    TestExtrusion.sketch.must_be_kind_of Sketch
+	end
+
 	describe "when initializing a new instance" do
 	    subject { TestExtrusion.new(length: 5) }
 
