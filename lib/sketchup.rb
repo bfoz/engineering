@@ -145,7 +145,7 @@ module SketchUp
 		    end
 		when Geometry::Polygon
 		    "#{parent}.add_face(#{to_sketchup(entity.points, parent, transformation)})"
-		when Geometry::Rectangle
+		when Geometry::Rectangle, Geometry::Square
 		    "#{parent}.add_face(#{to_sketchup(entity.points, parent, transformation)})"
 		when Geometry::Transformation
 		    pt = '[' + (entity.translation ? to_sketchup(entity.translation.to_a) : '0,0,0') + ']'
