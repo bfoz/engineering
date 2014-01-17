@@ -54,7 +54,13 @@ module Engineering
 
 	    # Bind any attribute getters and setters to the new subclass
 	    attribute_getters = builder.instance_variable_get(:@attribute_getters) || {}
-	    attribute_getters.each {|k, m| klass.send :define_method, k, m }
+	    attribute_getters.each do |k, m|
+		klass.send :define_method, k, m
+		if attribute_defaults.has_key?(k)
+		    klass.instance_variable_set('@' + k.to_s, attribute_defaults[k])
+		    klass.class.send(:define_method, k) { instance_variable_get('@' + k.to_s) }
+		end
+	    end
 
 	    attribute_setters = builder.instance_variable_get(:@attribute_setters) || {}
 	    attribute_setters.each {|k, m| klass.send :define_method, k, m }

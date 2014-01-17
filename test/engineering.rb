@@ -111,6 +111,14 @@ describe Engineering do
 	it 'must allow the default value to be overriden' do
 	    subject.new(attribute0: 24).attribute0.must_equal 24
 	end
+
+	it 'must have class attributes' do
+	    subject.attribute0.must_equal 42
+	end
+
+	it 'must not have a class setter' do
+	    -> { subject.attribute0 = 5 }.must_raise NoMethodError
+	end
     end
 
     describe "when creating an Extrusion subclass" do
