@@ -121,6 +121,34 @@ describe Engineering do
 	end
     end
 
+    describe 'when creating a Model subclass with read-only attributes that have default values' do
+	subject do
+	    model :TestModel do
+		attr_reader :attributeRO, 42
+	    end
+	end
+
+	it 'must have the default value' do
+	    subject.new.attributeRO.must_equal 42
+	end
+
+	it 'must not allow the default value to be overriden' do
+	    -> { subject.new(attributeRO: 24) }.must_raise NoMethodError
+	end
+
+	it 'must have class attributes' do
+	    subject.attributeRO.must_equal 42
+	end
+
+	it 'must not have a class setter' do
+	    -> { subject.attributeRO = 5 }.must_raise NoMethodError
+	end
+
+	it 'must not have an instance setter' do
+	    -> { subject.new.attributeRO = 6 }.must_raise NoMethodError
+	end
+    end
+
     describe "when creating an Extrusion subclass" do
 	after do
 	    Object.send(:remove_const, :TestExtrusion)

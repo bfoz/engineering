@@ -65,8 +65,12 @@ module Engineering
 	    attribute_setters = builder.instance_variable_get(:@attribute_setters) || {}
 	    attribute_setters.each {|k, m| klass.send :define_method, k, m }
 
+	    # Instance variable values for read-only attributes need special handling
+	    options = attribute_defaults.select {|k,v| klass.respond_to? k.to_s + '=' }
+	    instance_variable_defaults = attribute_defaults.reject {|k,v| klass.respond_to? k.to_s + '=' }
 	    klass.send :define_method, :initialize do |*args, &block|
-		super *(attribute_defaults.map {|k,v| { k => (v.respond_to?(:call) ? v.call : v) } }), *args, &block
+		instance_variable_defaults.each {|k,v| instance_variable_set('@' + k.to_s, v) }
+		super *(options.map {|k,v| { k => (v.respond_to?(:call) ? v.call : v) } }), *args, &block
 		initial_elements.each {|a| push a }
 	    end
 
