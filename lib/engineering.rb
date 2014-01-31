@@ -97,7 +97,7 @@ module Engineering
 	    # Build a {Polygon} instance using the {Sketch} DSL
 	    # @return [Polygon]
 	    def self.build(&block)
-		Sketch::PolygonBuilder.new.evaluate(&block)
+		Sketch::Builder::Polygon.new.evaluate(&block)
 	    end
 	end
 
@@ -105,7 +105,7 @@ module Engineering
 	    # Build a {Polyline} instance using the {Sketch} DSL
 	    # @return [Polyline]
 	    def self.build(&block)
-		Sketch::PolylineBuilder.new.evaluate(&block)
+		Sketch::Builder::Polyline.new.evaluate(&block)
 	    end
 	end
     end

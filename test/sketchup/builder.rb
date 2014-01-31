@@ -40,7 +40,7 @@ describe SketchUp::Builder do
 
     describe "when given a Model of a translated Extrusion" do
 	sketch = Sketch.new
-	sketch.add_rectangle size:[10, 20]
+	sketch.push Geometry::Rectangle.new size:[10, 20]
 	before do
 	    subject.container = Model.new do
 		push Model::Extrusion.new(length:5, sketch:sketch, transformation:Geometry::Transformation.new(origin:[1,2,3]))
@@ -54,7 +54,7 @@ describe SketchUp::Builder do
 
     it "should generate the correct text from a Model of a simple extrusion" do
 	sketch = Sketch.new
-	sketch.add_rectangle size:[10, 20]
+	sketch.push Geometry::Rectangle.new size:[10, 20]
 	model = Model.new do
 	    push Model::Extrusion.new(length:5, sketch:sketch)
 	end
@@ -64,7 +64,7 @@ describe SketchUp::Builder do
 
     it "should generate the correct text from a Model of a simple extrusion with units" do
 	sketch = Sketch.new
-	sketch.add_rectangle size:[1.meter, 10]
+	sketch.push Geometry::Rectangle.new size:[1.meter, 10]
 	model = Model.new
 	model.push Model::Extrusion.new(length:5.meters, sketch:sketch)
 	@builder.container = model
@@ -78,7 +78,7 @@ describe SketchUp::Builder do
 
     it "should generate correct text from a simple Sketch object" do
 	sketch = Sketch.new
-	sketch.add_line [0,0], [1,0]
+	sketch.push Geometry::Line[[0,0], [1,0]]
 	@builder.container = sketch
 	@builder.to_s.must_equal File.read('test/fixtures/sketchup/line_sketch.su')
     end
@@ -92,14 +92,14 @@ describe SketchUp::Builder do
 
     it "should generate correct text from a Sketch object with a single Rectangle" do
 	sketch = Sketch.new
-	sketch.add_rectangle origin:[0,0], size:[1,1]
+	sketch.push Geometry::Rectangle.new origin:[0,0], size:[1,1]
 	@builder.container = sketch
 	@builder.to_s.must_equal rectangle_sketch_fixture
     end
 
     it "should generate correct text from a Sketch object with a single Polygon" do
 	sketch = Sketch.new
-	sketch.add_polygon [0,0], [0,1], [1,1], [1,0], [0,0]
+	sketch.push Polygon.new [0,0], [0,1], [1,1], [1,0], [0,0]
 	@builder.container = sketch
 	@builder.to_s.must_equal rectangle_sketch_fixture
     end
@@ -134,7 +134,7 @@ describe SketchUp::Builder do
 
     it "Path" do
 	sketch = Sketch.new
-	sketch.add_path [0,0], Geometry::Arc.new(center:[0,0], radius:5, start:0, end:90*Math::PI/180), [0,0]
+	sketch.push Path.new [0,0], Geometry::Arc.new(center:[0,0], radius:5, start:0, end:90*Math::PI/180), [0,0]
 	builder = SketchUp::Builder.new( Model::Builder.new.evaluate { extrude length:5, sketch:sketch })
     end
 end
