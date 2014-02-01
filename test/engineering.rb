@@ -99,7 +99,7 @@ describe Engineering do
 
     describe 'when creating a Model subclass with attributes that have default values' do
 	subject do
-	    model :TestModel5 do
+	    model do
 		attribute :attribute0, 42
 	    end
 	end
@@ -123,7 +123,7 @@ describe Engineering do
 
     describe 'when creating a Model subclass with read-only attributes that have default values' do
 	subject do
-	    model :TestModel do
+	    model do
 		attr_reader :attributeRO, 42
 	    end
 	end
