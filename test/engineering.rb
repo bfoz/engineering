@@ -36,7 +36,7 @@ describe Engineering do
 
 	it "must call the initializer block when constructed" do
 	    TestModel.new.elements.count.must_equal 1
-	    TestModel.new.elements.first.must_be_instance_of Model::Extrusion
+	    TestModel.new.elements.first.must_be_kind_of Model::Extrusion
 	    TestModel.new.elements.first.length.must_equal 10
 	end
 
@@ -58,7 +58,7 @@ describe Engineering do
 
 	    it "must call the correct initializer block when constructed" do
 		subject.elements.count.must_equal 1
-		subject.elements.first.must_be_instance_of Model::Extrusion
+		subject.elements.first.must_be_kind_of Model::Extrusion
 		subject.elements.first.length.must_equal 5
 	    end
 
@@ -67,7 +67,7 @@ describe Engineering do
 
 		it "must call the correct initializer block when constructed" do
 		    anotherTestModel.elements.count.must_equal 1
-		    anotherTestModel.elements.first.must_be_instance_of Model::Extrusion
+		    anotherTestModel.elements.first.must_be_kind_of Model::Extrusion
 		    anotherTestModel.elements.first.length.must_equal 10
 		end
 	    end
@@ -169,7 +169,7 @@ describe Engineering do
 	end
 
 	it 'must have a class attribute for the Sketch' do
-	    TestExtrusion.sketch.must_be_kind_of Sketch
+	    TestExtrusion.sketch.ancestors.must_include Sketch
 	end
 
 	describe "when initializing a new instance" do
@@ -186,27 +186,48 @@ describe Engineering do
     end
 
     describe 'when creating an Extrusion subclass with a length' do
-	after { Object.send :remove_const, :TestExtrusion }
-
-	before do
-	    extrusion :TestExtrusion do
+	subject do
+	    extrusion do
 		length 10
 		square 5
 	    end
 	end
 
 	it 'must have a class attribute for the length' do
-	    TestExtrusion.length.must_equal 10
+	    subject.length.must_equal 10
 	end
 
 	describe 'when initializing a new instance' do
 	    it 'must reject a length argument' do
-		-> { TestExtrusion.new(length:5) }.must_raise ArgumentError
+		-> { subject.new(length:5) }.must_raise ArgumentError
 	    end
 
 	    it 'must have the proper length' do
-		TestExtrusion.new.length.must_equal 10
+		subject.new.length.must_equal 10
 	    end
+	end
+    end
+
+    describe 'when creating an Extrusion subclass with attributes' do
+	subject do
+	    extrusion do
+		attribute :attribute0
+	    end
+	end
+
+	it 'must define the attributes' do
+	    subject.new.must_be :respond_to?, :attribute0
+	    subject.new.must_be :respond_to?, :attribute0=
+	end
+
+	it 'must have working accessors' do
+	    test_model = subject.new
+	    test_model.attribute0 = 42
+	    test_model.attribute0.must_equal 42
+	end
+
+	it 'must be able to initialize the attribute during construction' do
+	    subject.new(attribute0: 37).attribute0.must_equal 37
 	end
     end
 
