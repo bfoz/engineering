@@ -161,6 +161,13 @@ module SketchUp
 		when Units
 		    s = entity.to_s
 		    SKETCHUP_UNITS[s] or raise "SketchUp won't recognize '#{s}'"
+		when Units::Operator
+		    operator =	case entity
+				    when Units::Addition then ' + '
+				    when Units::Division then ' / '
+				    when Units::Subtraction then ' - '
+				end
+		    '(' + entity.operands.map {|a| to_sketchup(a)}.join(operator) + ')'
 		when Units::Numeric
 		    [entity.value, entity.units].compact.map {|a| to_sketchup(a)}.join '.'
 		else
