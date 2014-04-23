@@ -129,6 +129,40 @@ describe SketchUp::Builder do
 	    it "must generate the correct text" do
 		subject.to_s.must_equal File.read('test/fixtures/sketchup/sketch_group.su')
 	    end
+
+	    describe 'when the Group contains a Group' do
+		before do
+		    subject.container = Sketch::Builder.new do
+			group origin:[1,2] do
+			    group origin:[3,4] do
+				circle diameter:1
+			    end
+			end
+		    end.sketch
+		end
+
+		it 'must generate the correct text' do
+		    subject.to_s.must_equal File.read('test/fixtures/sketchup/sketch_group_group.su')
+		end
+	    end
+
+	    describe 'when the Group contains a Group with a Group' do
+		before do
+		    subject.container = Sketch::Builder.new do
+			group origin:[1,2] do
+			    group origin:[3,4] do
+				group origin:[5,6] do
+				    circle diameter:1
+				end
+			    end
+			end
+		    end.sketch
+		end
+
+		it 'must generate the correct text' do
+		    subject.to_s.must_equal File.read('test/fixtures/sketchup/sketch_group_group_group.su')
+		end
+	    end
 	end
     end
 

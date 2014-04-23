@@ -1,0 +1,4 @@
+model = Sketchup.active_model
+model.entities.clear!
+model.definitions.purge_unused
+lambda{ points = model.entities.add_circle(Geom::Point3d.new(0, 0).transform!(Geom::Transformation.new([4, 6],[1,0,0],[0,1,0])), [0,0,1], 0.5); points[0].find_faces; points[0].faces[0]}.call

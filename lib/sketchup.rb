@@ -102,7 +102,14 @@ module SketchUp
 			container.elements.map {|element| to_array(element, parent) }.flatten
 		    end
 		when Sketch::Group
-		    container.geometry.map {|element| to_sketchup(element, parent, container.transformation) }.flatten
+		    container.geometry.map do |element|
+			combined_transformation = transformation ? (transformation + container.transformation) : container.transformation
+			case element
+			    when Sketch::Group then to_array(element, parent, combined_transformation)
+			    else
+				to_sketchup(element, parent, combined_transformation)
+			end
+		    end.flatten
 		when Sketch  # !!! Must be after all subclasses of Sketch
 		    container.geometry.map do |element|
 			case element
