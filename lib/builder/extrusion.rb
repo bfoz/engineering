@@ -119,13 +119,14 @@ private
 	    end
 
 	    # Use the given block to build a {Polyline}
-	    def build_polyline(&block)
-		::Sketch::Builder::Polyline.new.evaluate(&block)
+	    def build_polyline(**options, &block)
+		::Sketch::Builder::Polyline.new(**options).evaluate(&block)
 	    end
 
-	    # Build a {Polyline} from a block
-	    def build_polygon(&block)
-		::Sketch::Builder::Polygon.new.evaluate(&block)
+	    # Build a {Polygon} from a block
+	    # @return [Polygon]
+	    def build_polygon(**options, &block)
+		::Sketch::Builder::Polygon.new(**options).evaluate(&block)
 	    end
 
 	    # Define an attribute with the given name and optional default value (or block)
