@@ -26,6 +26,10 @@ describe Engineering::Builder::Extrusion do
 	Class.wont_be :respond_to?, :sketch
     end
 
+    it 'must have a length property that is availabe to the DSL' do
+	subject.build() { length 5; length.must_equal 5 }
+    end
+
     describe 'when creating a subclass with attributes' do
 	let :klass do
 	    subject.build do

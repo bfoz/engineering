@@ -101,8 +101,9 @@ private
 
 	    # Set the length attribute of the {Extrusion}
 	    # @param length [Number]	the new length
-	    def length(length)
-		@length = length
+	    def length(length=nil)
+		@length = length if length
+		@length
 	    end
 
 	    # Create a {Group} with an optional transformation
