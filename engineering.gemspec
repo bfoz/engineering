@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
     s.require_paths = ["lib"]
 
     s.add_dependency	'dxf', '~> 0.2'
-    s.add_dependency	'geometry', '~> 6.1'
+    s.add_dependency	'geometry', '~> 6.3'
     s.add_dependency	'model', '~> 0.2'
     s.add_dependency	'sketch', '> 0.3'
     s.add_dependency	'units', '~> 2.2'

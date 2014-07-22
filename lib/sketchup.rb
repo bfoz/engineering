@@ -127,6 +127,11 @@ module SketchUp
 	    case entity
 		when Array
 		    entity.map {|v| to_sketchup(v, parent, transformation) }.join(', ')
+		when Geometry::Annulus
+		    "->{ inner_face = #{parent}.add_circle(#{to_sketchup(entity.center, parent, transformation)}, [0,0,1], #{to_sketchup(entity.inner_radius)}).tap {|points| points[0].find_faces}.first.faces[0]\n \
+			 outer_face = #{parent}.add_circle(#{to_sketchup(entity.center, parent, transformation)}, [0,0,1], #{to_sketchup(entity.outer_radius)}).tap {|points| points[0].find_faces}.first.faces[0]\n \
+			 #{parent}.erase_entities(inner_face)\n \
+			 outer_face }.call"
 		when Geometry::Arc
 		    "#{parent}.add_arc(#{to_sketchup(entity.center)}, [1,0,0], [0,0,1], #{to_sketchup(entity.radius)}, #{to_sketchup(entity.start_angle)}, #{to_sketchup(entity.end_angle)})"
 		when Geometry::Circle
