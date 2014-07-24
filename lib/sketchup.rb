@@ -81,6 +81,7 @@ module SketchUp
 	end
 
 	# Convert the given container to an array of strings that SketchUp can read
+	# @return [Array]
 	def to_array(container, parent='model.entities', transformation=nil)
 	    case container
 		when Model::Extrusion
@@ -90,11 +91,11 @@ module SketchUp
 			to_array(container.sketch, parent, container.transformation).map {|l| "#{l}.pushpull(#{to_sketchup(-container.length)})"}
 		    end
 		when Model::Group
+		    elements = container.elements.map {|element| to_array(element, 'group.entities') }
 		    if container.transformation and not container.transformation.identity?
-			add_instance(parent, container)
-		    else
-			container.elements.map {|element| to_array(element, parent) }.flatten
+			elements << "group.transformation = #{to_sketchup(container.transformation)}"
 		    end
+		    ["#{parent}.add_group.tap {|group|", elements.flatten.map {|line| line.prepend("\t") }, '}']
 		when Model  # !!! Must be after all subclasses of Model
 		    if container.transformation and not container.transformation.identity?
 			add_instance(parent, container)
