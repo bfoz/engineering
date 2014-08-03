@@ -23,7 +23,10 @@ module Engineering
 	# @param name [Symbol]    The name of the resulting subclass
 	def extrusion(name=nil, &block)
 	    klass = Engineering::Builder::Extrusion.build(&block)
-	    Object.const_set(name, klass) if name
+	    if name
+		parent = (Module == self.class) ? self : Object
+		parent.const_set(name, klass)
+	    end
 	    klass
 	end
 
@@ -31,7 +34,10 @@ module Engineering
 	# @param name [Symbol]	The name of the new {Model} subclass
 	def model(name=nil, &block)
 	    klass = Builder::Model.build(&block)
-	    Object.const_set(name, klass) if name
+	    if name
+		parent = (Module == self.class) ? self : Object
+		parent.const_set(name, klass)
+	    end
 	    klass
 	end
 
@@ -39,7 +45,10 @@ module Engineering
 	# @param name [Symbol]  The name of the {Sketch} subclass
 	def sketch(name=nil, &block)
 	    klass = Builder::Sketch.build(&block)
-	    Object.const_set(name, klass) if name
+	    if name
+		parent = (Module == self.class) ? self : Object
+		parent.const_set(name, klass)
+	    end
 	    klass
 	end
 
@@ -63,3 +72,8 @@ end
 
 self.extend Engineering::DSL
 include Geometry	# Make Geometry types more readily available
+
+# Allow the DSL to be called from within Module definitions
+class Module
+    include Engineering::DSL
+end

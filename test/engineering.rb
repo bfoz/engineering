@@ -74,6 +74,15 @@ describe Engineering do
 	end
     end
 
+    it 'must create a Model subclass inside of a Module' do
+	module TestModule
+	    model :TestModel5 do
+	    end
+	end
+
+	TestModule.constants.include?(:TestModel5).must_equal true
+    end
+
     describe 'when creating a Model subclass with attributes' do
 	before do
 	    model :TestModel4 do
