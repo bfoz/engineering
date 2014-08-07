@@ -1,5 +1,6 @@
 require 'model'
 
+require_relative '../model/dsl'
 require_relative 'extrusion'
 
 module Engineering
