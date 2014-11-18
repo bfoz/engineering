@@ -113,7 +113,6 @@ describe SketchUp::Builder do
 
     it "must handle a sub-model" do
 	builder = SketchUp::Builder.new( Model::Builder.new.evaluate { push Model.new, :origin => [3,2,1] })
-	builder.container.elements.count.must_equal 1
 	builder.container.elements.first.must_be_instance_of(Model)
 	builder.to_s.must_match %r{model = Sketchup.active_model\nmodel.entities.clear!\nmodel.definitions.purge_unused\nlambda {|m|\n\t\n}.call(model.definitions.add('Model(\d+)'))\nmodel.entities.add_instance(model.definitions\['Model(\d+)'\], Geom::Transformation.new(\[3, 2, 1\],\[1,0,0\],\[0,1,0\]))}
     end
