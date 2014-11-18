@@ -1,0 +1,11 @@
+language: ruby
+rvm:
+- 2.0.0
+deploy:
+  provider: rubygems
+  api_key:
+    secure: VCPQ9R1RYDhW68CT/P84RvNFbMzI3PsU8K0dFThhr5D2QcpRZTZTW6OeQIpToMdpvFny6Dpu7xa9I+wNFEuMYGIXXlLNirPkhNpu8iBCgarP1QoW173sNNhT8gCjhJrY2QmWFMjH//smMSZHfoJ0cO06/7246/9qK9171C8Lo0E=
+  gem: engineering
+  on:
+    tags: true
+    repo: bfoz/engineering
