@@ -86,7 +86,8 @@ describe SketchUp::Builder do
     describe "when given a Sketch" do
 	it "must RegularPolygon" do
 	    subject.container = Sketch.new.tap {|s| s.push RegularPolygon.new(sides:6, center:[0,0], radius:5) }
-	    subject.to_s.must_equal File.read('test/fixtures/sketchup/hexagon_sketch.su')
+	    expected = %r{model = Sketchup.active_model\nmodel.entities.clear!\nmodel.definitions.purge_unused\nmodel.entities.add_face\(\[5.0, 0.0\], \[2.5000000000000\d+, 4.330127018922\d+\], \[-2.49999999999\d+, 4.3301270189221\d+\], \[-5.0, 6.123233995736766e-16\], \[-2.5000000000\d+, -4.330127018922\d+\], \[2.4999999999999\d+, -4.330127018922\d+\]\)}
+	    subject.to_s.must_match expected
 	end
     end
 
