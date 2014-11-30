@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
 
     s.add_dependency	'dxf', '~> 0.3'
     s.add_dependency	'geometry', '~> 6.4'
-    s.add_dependency	'model', '~> 0.2'
+    s.add_dependency	'model', '> 0.2.1'
     s.add_dependency	'sketch', '~> 0.4'
     s.add_dependency	'units', '~> 2.4'
 

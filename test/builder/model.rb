@@ -156,6 +156,21 @@ describe Engineering::Builder::Model do
 	end
     end
 
+    describe 'when creating a subclass with a stack layout' do
+	let :klass do
+	    subject.build do
+		stack do
+		end
+	    end
+	end
+
+	it 'must create a Layout subclass' do
+	    klass.elements.size.must_equal 1
+	    klass.elements.first.first.ancestors.must_include Model::Layout
+	    klass.elements.first.last.first[:direction].must_equal :vertical
+	end
+    end
+
     describe 'when creating a subclass that contains another Model subclass' do
 	let :klass do
 	    subject.build do

@@ -81,6 +81,12 @@ private
 		[self.class.new.build(::Model::Group, &block), args]
 	    end
 
+
+	    # Build a new {Layout}
+	    def build_layout(*args, &block)
+		[self.class.new.build(::Model::Layout, &block), args]
+	    end
+
 	    # Define an attribute with the given name and optional default value (or block)
 	    # @param name [String]	The attribute's name
 	    # @param value An optional default value
