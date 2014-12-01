@@ -1,5 +1,4 @@
-require 'model'
-
+require_relative '../model'
 require_relative '../model/dsl'
 require_relative 'extrusion'
 
@@ -24,9 +23,6 @@ module Engineering
 	    def build(super_class=::Model, &block)
 		@klass = Class.new(super_class)
 		if block_given?
-		    @klass.singleton_class.send :attr_reader, :elements
-		    @klass.instance_variable_set(:@elements, [])
-
 		    @self_before_instance_eval = block.binding.eval('self')
 		    self.instance_eval(&block)
 
@@ -113,9 +109,9 @@ private
 
 	    def push(element, *args)
 		if element.is_a? Class
-		    @klass.instance_variable_get(:@elements).push [element, args]
+		    @klass.send :push, [element, args]
 		elsif element.is_a?(Array) and element.first.is_a?(Class)
-		    @klass.instance_variable_get(:@elements).push element
+		    @klass.send :push, element
 		else
 		    raise ArgumentError, "Can't push instances while building a class"
 		end
