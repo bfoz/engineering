@@ -6,7 +6,7 @@ module Engineering
     module Builder
 	# Build a {Model} subclass
 	class Model
-	    include ::Model::DSL
+	    prepend ::Model::DSL
 
 	    # Convenience method for creating a new builder and evaluating a block
 	    def self.build(&block)

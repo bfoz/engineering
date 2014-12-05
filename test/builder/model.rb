@@ -203,4 +203,30 @@ describe Engineering::Builder::Model do
 	    klass.new.first.transformation.translation.must_equal Geometry::Point[1,2,3]
 	end
     end
+
+    describe 'shortcuts' do
+	after { Object.send :remove_const, :Foo }
+
+	it 'must have a shortcut for pushing a subclass without arguments' do
+	    Foo = Class.new(Model)
+	    klass = subject.build do
+		Foo()
+	    end
+
+	    klass.elements.length.must_equal 1
+	    klass.elements.first.first.ancestors.must_include Model
+	    klass.elements.first.last.must_equal []
+	end
+
+	it 'must have a shortcut for pushing a subclass with arguments' do
+	    Foo = Class.new(Model)
+	    klass = subject.build do
+		Foo origin:[1,2,3]
+	    end
+
+	    klass.elements.length.must_equal 1
+	    klass.elements.first.first.ancestors.must_include Model
+	    klass.elements.first.last.must_equal [origin:[1,2,3]]
+	end
+    end
 end
