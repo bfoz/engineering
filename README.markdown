@@ -11,11 +11,6 @@ that isn't in Engineering, either let me know, or fork and add it yourself (and
 send me a pull request). Or feel free to create your own gem that reopens
 the module and adds whatever is missing, if that's more your style.
 
-License
--------
-
-Copyright 2012-2014 Brandon Fosdick <bfoz@bfoz.net> and released under the BSD license.
-
 Dependencies
 ------------
 
@@ -107,3 +102,8 @@ Once a Model has been defined, it can be instantiated and exported to SketchUp w
     SketchUp.write('MyCube.su', MyCube.new)
 
 Then, launch SketchUp, open the _Ruby Console_ (it's in the Window menu), and _load 'MyCube.su'_. Your new geometry will replace whatever was already in the SketchUp document (a person if you just opened it), so be careful.
+
+License
+-------
+
+Copyright 2012-2015 by [Brandon Fosdick](bfoz@bfoz.net) and released under the [BSD license](http://opensource.org/licenses/BSD-2-Clause).
