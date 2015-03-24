@@ -1,6 +1,9 @@
 Engineering for Ruby
 ====================
 
+[![Build Status](https://travis-ci.org/bfoz/engineering.svg?branch=master)](https://travis-ci.org/bfoz/engineering)
+[![Gem Version](https://badge.fury.io/rb/engineering.svg)](http://badge.fury.io/rb/engineering)
+
 This is a meta-gem for all things related to engineering (particularly CAD stuff). The Engineering module
 is your one stop shop for all of the tools you need for your latest mad-engineering project.
 
