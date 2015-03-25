@@ -1,3 +1,5 @@
+require 'model/dsl'
+
 class Model
     # Extensions to Model::DSL
     module DSL
