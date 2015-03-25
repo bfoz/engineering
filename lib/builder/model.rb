@@ -1,4 +1,4 @@
-require_relative '../model'
+require_relative '../model/model'
 require_relative '../model/dsl'
 require_relative 'extrusion'
 

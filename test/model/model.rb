@@ -1,5 +1,5 @@
 require 'minitest/autorun'
-require_relative '../lib/model'
+require_relative '../../lib/model/model'
 
 describe Model do
     describe 'when subclassing Model' do
