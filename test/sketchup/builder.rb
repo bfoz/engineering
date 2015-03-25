@@ -2,7 +2,7 @@ require 'minitest/autorun'
 require 'sketchup'
 
 describe SketchUp::Builder do
-    Size = Geometry::Size
+    Size ||= Geometry::Size
 
     subject { SketchUp::Builder.new }
 
