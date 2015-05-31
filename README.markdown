@@ -26,54 +26,32 @@ Dependencies
 Installation
 ------------
 
-Engineering has a number of dependencies. Some of which are hosted on rubygems.org
-and can therefore be handled by the gem utility, but others must be installed
-manually. The easiest option is to use [Bundler](http://bundler.io/), but
-*gem* can be used if you're willing to install the *units* gem manually.
+_Engineering_ has a number of dependencies. Some of which are hosted on [RubyGems](https://rubygems.org)
+and can be handled by the `gem` utility, but others must be installed manually.
 
-### Using Bundler
+The *units* gem hosted on [Rubygems](http://rubygems.org) is a bit out-of-date, and generally not the gem we're looking for. So, before installing the *engineering* gem, we need to manually install the correct *units* gem.
 
-Installing the *engineering* gem using bundler is very easy, although a little more involved than normal.
-
-Start with the normal gem command:
-
-    gem install engineering
-
-Unfortunately, this will either fail, or it will grab the wrong version of the *units* gem. But, not to worry, we can use bundler to fix it:
-
-    bundle install
-
-And that's it. You're done. Get on with taking over the world already.
-
-If you happen to be part of the 0.001% of Mad Engineers who don't already have bundler installed, it's very easy to get:
-
-    gem install bundler
-
-### Using Rubygems
-
-Sadly, the *units* gem hosted on [Rubygems](http://rubygems.org) is a bit out-of-date, and generally not the gem we're looking for. So, after *gem* does its thing, we need to do a little cleanup.
-
-Start with the normal gem command:
-
-    gem install engineering
-
-Then uninstall the bogus *units* gem:
+First, make sure you don't already have a conflicting version of *units*:
 
     gem uninstall units
 
-Clone the gem we're looking for:
+Next, clone the gem that we're looking for:
 
     git clone git://github.com/bfoz/units.git
 
-Install it:
-
-    cd units && rake install
-
-You do have [rake](http://rake.rubyforge.org/) installed, right? If not, do this before the previous step:
+You probably already have [rake](http://rake.rubyforge.org/) installed, but if you don't, then do this before going any further:
 
     gem install rake
 
-And you should be good to go. If you made it through all of that, then I expect to hear about your machinations on the evening news any day now.
+Finally, install the correct *units* gem:
+
+    cd units && rake install
+
+Now, we can install *engineering* in the normal fashion:
+
+    gem install engineering
+
+And that's it. You're done. Get going with taking over the world already.
 
 Examples
 --------
@@ -87,7 +65,7 @@ Creating a custom Cube class, the hard way:
             square 10.cm
         end
     end
-    
+
     MyCube.new
 
 Of course, this is ruby, so there's always another way to do it
@@ -95,7 +73,7 @@ Of course, this is ruby, so there's always another way to do it
     extrusion :MyCube do
         rectangle Size[10.cm, 10.cm]
     end
-    
+
     MyCube.new length:10.cm
 
 ### Attributes
