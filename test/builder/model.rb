@@ -16,26 +16,45 @@ describe Engineering::Builder::Model do
 	Class.wont_be :respond_to?, :elements
     end
 
-    describe 'when creating a Model subclass with attributes' do
+    describe 'when creating an uninitialized attribute' do
 	let :klass do
 	    subject.build do
 		attribute :attribute0
 	    end
 	end
 
+	it 'must have a proxy object' do
+	    klass.attribute0.must_be_kind_of Engineering::Attribute
+	end
+
+	describe 'when instantiated' do
+	    it 'must complain about missing required attributes' do
+		-> { klass.new }.must_raise ArgumentError
+	    end
+
+	    it 'must complain if any required attribute is missing' do
+		klass = subject.build do
+		    attribute :attribute0
+		    attribute :attribute1
+		end
+		-> { klass.new(attribute0: 42) }.must_raise ArgumentError
+	    end
+	end
+
 	it 'must define the attributes for instances' do
-	    klass.new.must_be :respond_to?, :attribute0
-	    klass.new.must_be :respond_to?, :attribute0=
+	    klass.new(attribute0: 42).must_be :respond_to?, :attribute0
+	    klass.new(attribute0: 42).must_be :respond_to?, :attribute0=
 	end
 
 	it 'must have working instance accessors' do
-	    test_model = klass.new
+	    test_model = klass.new(attribute0: 37)
 	    test_model.attribute0 = 42
 	    test_model.attribute0.must_equal 42
 	end
 
 	it 'must be able to initialize the attribute during construction' do
 	    klass.new(attribute0: 37).attribute0.must_equal 37
+	    klass.new(attribute0: 42).attribute0.must_equal 42
 	end
     end
 

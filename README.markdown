@@ -98,6 +98,43 @@ Of course, this is ruby, so there's always another way to do it
     
     MyCube.new length:10.cm
 
+### Attributes
+
+Models can have attributes that stand-in for values that aren't known until the subclass is instantiated.
+
+```ruby
+model :VariableCube do
+    attribute :side_length
+
+    extrusion side_length do
+        square side_length
+    end
+end
+```
+
+Given the above, you can then make cubes of any size you like.
+
+```ruby
+small_cube = VariableCube.new(side_length:1.cm)
+large_cube = VariableCube.new(side_length:1.km)
+```
+
+You can also give the attributes values right away, and then use them as properties when defining other geometry.
+
+```ruby
+model :SugarCube do
+    attribute side_length: 1.cm
+
+    extrusion side_length do
+       square side_length
+    end
+end
+
+# Stack the cubes
+bottom_cube = SugarCube.new
+top_cube = SugarCube.new(origin:[0,0,SugarCube.side_length])
+```
+
 ### Exporting
 
 Once a Model has been defined, it can be instantiated and exported to SketchUp with a single line

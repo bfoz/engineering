@@ -1,3 +1,4 @@
+require_relative '../engineering/attribute'
 require_relative '../model/model'
 require_relative '../model/dsl'
 require_relative 'extrusion'
@@ -36,6 +37,14 @@ module Engineering
 
 			# Handle the others normally, while evaluating any blocks
 			super(*(options.map {|k,v| { k => (v.respond_to?(:call) ? v.call : v) } }), *args, &block)
+
+			# Check that all required attributes have been assigned
+			instance_variables.each do |v|
+			    variable = instance_variable_get(v)
+			    if (variable.nil? || (variable.respond_to?(:value) && variable.value.nil?))
+				raise ArgumentError, "Attribute '#{v}' must be initialized"
+			    end
+			end
 
 			# Push the default geometry
 			self.class.instance_variable_get(:@elements).each do |a|
@@ -98,6 +107,10 @@ private
 		if value || block_given?
 		    @klass.instance_variable_set(ivar_name, value || instance_eval(&block))
 		    @attribute_defaults[name] = value || block
+		else
+		    value = Engineering::Attribute.new
+		    @klass.instance_variable_set(ivar_name, value)
+		    @attribute_defaults[name] = value
 		end
 	    end
 
